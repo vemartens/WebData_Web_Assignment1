@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>Mastermind</title>
+        <link rel="stylesheet">
+    </head>
+
+    <body>
+        <main>
+            <section id="top">
+                <h1>Mastermind</h1>
+            </section>
+
+            <section id="combination">
+                <div style="width:65px;height:20px;border:1px solid #000;"> O O O O </div>
+            </section>
+            <br>
+            <section id = "players">
+                <div style="width:60px;height:22px;border:1px solid #000;">Player01</div>
+                <div style="width:60px;height:22px;border:1px solid #000;">Player02</div>
+            </section>
+            <br>
+            <section id="colors">
+                <table>
+                    <tr>
+                        <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td>
+                    </tr>
+                </table>   
+            </section>
+            <br>
+            <section id="board">
+                <table border="1" rules="rows">
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                    <tr>
+                        <td> O </td> <td> O </td> <td> O </td> <td> O </td>
+                    </tr>
+                </table>   
+            </section>
+            <br>
+            <section id="ready">
+                <form action="/ready" method="get">
+                    <button type="submit">Ready</button>
+                </form>
+            </section>
+            
+            <section id="instrucion">
+                    <form action="/play" method="get">
+                        <button type="submit">Instructions</button>
+                    </form>
+            </section>
+        </main>
+    </body>
+</html>
