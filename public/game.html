@@ -12,7 +12,7 @@
 
             <section id="combination">
                 <table border=1 rules="none">
-                    <tr>
+                    <tr class="BoardLine" id="lineCombination">
                         <td> <div id="sol1" class="Bolletje">O</div> </td> 
                         <td> <div id="sol2" class="Bolletje">O</div> </td> 
                         <td> <div id="sol3" class="Bolletje">O</div> </td> 
@@ -49,61 +49,61 @@
             <br>
             <section id="board">
                 <table border="1" rules="rows">
-                    <tr>
+                    <tr id="line10" class="BoardLine">
                         <td> <div id="10A" class="Bolletje">O</div> </td> 
                         <td> <div id="10B" class="Bolletje">O</div> </td> 
                         <td> <div id="10C" class="Bolletje">O</div> </td> 
                         <td> <div id="10D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line9" class="BoardLine">
                         <td> <div id="9A" class="Bolletje">O</div> </td> 
                         <td> <div id="9B" class="Bolletje">O</div> </td> 
                         <td> <div id="9C" class="Bolletje">O</div> </td> 
                         <td> <div id="9D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line8" class="BoardLine">
                         <td> <div id="8A" class="Bolletje">O</div> </td> 
                         <td> <div id="8B" class="Bolletje">O</div> </td> 
                         <td> <div id="8C" class="Bolletje">O</div> </td> 
                         <td> <div id="8D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line7" class="BoardLine">
                         <td> <div id="7A" class="Bolletje">O</div> </td> 
                         <td> <div id="7B" class="Bolletje">O</div> </td> 
                         <td> <div id="7C" class="Bolletje">O</div> </td> 
                         <td> <div id="7D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line6" class="BoardLine">
                         <td> <div id="6A" class="Bolletje">O</div> </td> 
                         <td> <div id="6B" class="Bolletje">O</div> </td> 
                         <td> <div id="6C" class="Bolletje">O</div> </td> 
                         <td> <div id="6D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line5" class="BoardLine">
                         <td> <div id="5A" class="Bolletje">O</div> </td> 
                         <td> <div id="5B" class="Bolletje">O</div> </td> 
                         <td> <div id="5C" class="Bolletje">O</div> </td> 
                         <td> <div id="5D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line4" class="BoardLine">
                         <td> <div id="4A" class="Bolletje">O</div> </td> 
                         <td> <div id="4B" class="Bolletje">O</div> </td> 
                         <td> <div id="4C" class="Bolletje">O</div> </td> 
                         <td> <div id="4D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line3" class="BoardLine">
                         <td> <div id="3A" class="Bolletje">O</div> </td> 
                         <td> <div id="3B" class="Bolletje">O</div> </td> 
                         <td> <div id="3C" class="Bolletje">O</div> </td> 
                         <td> <div id="3D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line2" class="BoardLine">
                         <td> <div id="2A" class="Bolletje">O</div> </td> 
                         <td> <div id="2B" class="Bolletje">O</div> </td> 
                         <td> <div id="2C" class="Bolletje">O</div> </td> 
                         <td> <div id="2D" class="Bolletje">O</div> </td>
                     </tr>
-                    <tr>
+                    <tr id="line1" class="BoardLine">
                         <td> <div id="1A" class="Bolletje">O</div> </td> 
                         <td> <div id="1B" class="Bolletje">O</div> </td> 
                         <td> <div id="1C" class="Bolletje">O</div> </td> 
@@ -121,6 +121,7 @@
             <section id="instrucion">
                     <form action="/play" method="get">
                         <button type="submit">Instructions</button>
+                        <!-- <button type="submit">Instructions</button disabled> -->
                     </form>
             </section>
         </main>
