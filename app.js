@@ -2,6 +2,7 @@ var express = require("express");
 var http = require("http");
 
 var indexRouter = require("./routes/index");
+var messages = require("./public/javascripts/messages");
 
 var port = process.argv[2];
 var app = express();
