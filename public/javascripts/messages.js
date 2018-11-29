@@ -1,7 +1,6 @@
 
 (function(exports) {
 
-
      /* Client to server: game is complete, the winner is ...
       */
     exports.T_GAME_WON_BY = "GAME-WON-BY";             
