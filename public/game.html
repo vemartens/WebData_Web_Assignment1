@@ -10,11 +10,11 @@
                 <h1>Mastermind</h1>
             </section>
 
-            <section id="combination">
-                <button onclick="changeColor(id)" value="0" id="sol1">O</button>
-                <button disabled onclick="changeColor(id)" value="0" id="sol2">O</button>
-                <button disabled onclick="changeColor(id)" value="0" id="sol3">O</button>
-                <button disabled onclick="changeColor(id)" value="0" id="sol4">O</button>
+            <section class="line" id="combination">
+                <button onclick="changeColor(id)" value="0" id="A">O</button>
+                <button disabled onclick="changeColor(id)" value="0" id="B">O</button>
+                <button disabled onclick="changeColor(id)" value="0" id="C">O</button>
+                <button disabled onclick="changeColor(id)" value="0" id="D">O</button>
             </section>
             <br>
             
@@ -113,10 +113,9 @@
             <br>
 
             <section id="ready">
-                <form action="" method="get">
-                    <button disabled type="submit">Ready</button>
-                </form>
+                <button>Ready</button>
             </section>
+            <br>
             
             <section id="instrucion">
                     <form action="" method="get">
@@ -125,6 +124,9 @@
                     </form>
             </section>
 
+            <script src="javascripts/config.js"></script>
+            <script src="javascripts/messages.js"></script>
+            <script src="javascripts/interactions.js"></script>
             <script src="javascripts/bolletje.js"></script>
         </main>
     </body>

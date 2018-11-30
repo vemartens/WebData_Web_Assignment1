@@ -13,7 +13,6 @@ var app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-//http.createServer(app).listen(port);
 
 // app.get("/", (req, res) => {
 //     res.render("splash.ejs")}
@@ -28,19 +27,19 @@ var websockets = {};
 
 /*snap ik nog niet */
 
-// setInterval(function() {
-//     for(let i in websockets){
-//         if(websockets.hasOwnProperty(i)){
-//             let gameObj = websockets[i];
+setInterval(function() {
+    for(let i in websockets){
+        if(websockets.hasOwnProperty(i)){
+            let gameObj = websockets[i];
             
-//             //if the gameObj has a final status, the game is complete/aborted
-//             if(gameObj.finalStatus!=null){
-//                 console.log("\tDeleting element "+i);
-//                 delete websockets[i];
-//             }
-//         }
-//     }
-// }, 50000);
+            //if the gameObj has a final status, the game is complete/aborted
+            if(gameObj.gamestate=="A" || gameObj.gamestate=="B" || gameObj.gamestate=="ABORTED"){
+                console.log("\tDeleting element "+i);
+                delete websockets[i];
+            }
+        }
+    }
+}, 50000);
 
 var currentGame = new Game(gameStatus.gamesInitialized++); //gameID is gelijk aan hoeveelste game het is
 var connectionID = 0;
@@ -57,14 +56,74 @@ wss.on("connection", function connection(ws) {
     if(playerType == "B" && currentGame.getCombi().length!=0){
         let msg = messages.O_TARGET_COMBI;
         msg.data = currentGame.getCombi();
-        con.send(JSON.stringify(msg));
+        conn.send(JSON.stringify(msg));
     }
-
     
     if (currentGame.hasTwoConnectedPlayers()) {
         currentGame = new Game(gameStatus.gamesInitialized++);
-
     }
+
+    conn.on("message", function incoming(message) {
+        let oMsg = JSON.parse(message);
+
+        let gameObj = websockets[conn.id];
+        let isPlayerA = (gameObj.playerA == conn) ? true : false;
+
+        if (isPlayerA && gameObj.getCombi().length==0) {
+            if(oMsg.type == messages.T_TARGET_COMBI) {
+                gameObj.setCombi(oMsg.data);
+
+                if(gameObj.hasTwoConnectedPlayers()) {
+                    gameObj.playerB.send(message);
+                }
+            }
+        }
+        else if (isPlayerA) {
+            if(oMsg.type == messages.T_CHECK_RESULT) {
+                gameObj.playerB.send(message);
+                gameObj.setStatus("GUESS CHECKED")
+            }
+
+            if(oMsg.type == message.T_GAME_WON_BY) {
+                gameObj.setStatus(oMsg.data);
+                gameStatus.gamesCompleted++;
+            }
+        }
+        else {
+            if(oMsg.type == messages.T_MAKE_A_GUESS) {
+                gameObj.playerA.send(message);
+                gameObj.setStatus("COMBI GUESSED");
+            }
+        }
+    });
+
+    conn.on("close", function(code) {
+        
+        if(code == "1001") {
+            let gameObj = websockets[conn.id];
+
+            if (gameObj.isValidTransition(gameObj.gamestate, "ABORTED")){
+                gameObj.setStatus("ABORTED");
+                gamesStatus.gamesAborted++;                                                                    
+            } 
+
+            try{
+                gameObj.playerA.close();
+                gameObj.playerB = null;
+            }
+            catch(e){
+                console.log("Player A closing: " + e);            
+            }
+
+            try{
+                gameObj.playerB.close();
+                gameObj.playerA = null;
+            }
+            catch(e){
+                console.log("Player B closing: " + e);
+            }           
+        }                                           
+    });
 });
 
 server.listen(port);
