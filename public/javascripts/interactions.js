@@ -26,54 +26,96 @@ function GameState(socket) {
         this.wrongGuesses++;
     };
 
-    
+    // this.whoWon = function(){
+    //     if( this.wrongGuesses>Setup.MAX_ALLOWED_GUESSES){
+    //         return "A";
+    //     }
+
+    // /*als guessed combi is equal to target combi */
+
+    //         return "B";
+    //     }
+    //     return null;
+    // };
 
 }
 
 
 function PlayBoard(GameState) {
 
+    this.enableCombinationButtons = function() {
+        var combiLine = document.getElementById("combination");
+        for(var i=0; i<combiLine.childNodes.length; i++) {
+            combiLine.childNodes[i].disabled = false;
+        }
+    };
+
+    this.disableCombinationButtons = function() {
+        var combiLine = document.getElementById("combination");
+        for(var i=0; i<combiLine.childNodes.length; i++) {
+            combiLine.childNodes[i].disabled = true;
+        }
+    };
+
     this.enableBoardLineButtons = function(guesses) {
         var rightLine = document.getElementById(guesses);
-        for(var i=0; i<rightLine.childNodes.length; i++) {
-            var bolletje = rightLine.childNodes[i];
-            bolletje.disabled = false;
+        for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
+            rightLine.childNodes[i].childNodes[0].disabled = false;
         }
-        //rightLine.childNodes[1].childNodes[0].disabled = false
-        
-        
-        
-        // Array.from(elements).forEach(function(el) {
-        //     if(el.id === wrongGuesses) {
-        //         var rightLine = document.getElementById(el.id);
-        //         for(var i=0; i<rightLine.childNodes.length; i++) {
-        //             var bolletje = rightLine.childNodes[i];
-        //             bolletje.disabled = false;
-        //         }
-                
-        //     }
-
-        //  });
     };
 
-    window.changeColor = function(elemId) {
+    this.disableBoardLineButtons = function(guesses) {
+        var rightLine = document.getElementById(guesses);
+        for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
+            rightLine.childNodes[i].childNodes[0].disabled = true;
+        }
+    };
+
+    this.enableReadyButton = function() {
+        document.getElementById("readyButton").disabled = false;
+    }
+
+    this.disableReadyButton = function() {
+        document.getElementById("readyButton").disabled = true;
+    }
+
+    this.changeColor = function(lineID) {
         var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
-        var bol = document.getElementById(elemId);
-        if(bol.value === "8")
-            bol.value = "-1";
-        bol.innerHTML = colors[++bol.value];        
-    };
-
-    window.enableBoardLineButtons = function(lineID) {
-
-        var lines = document.getElementsByClassName("line");
-        var boardLine = lines.getElementByID(lineID);
-        for(var i=0; i<boardLine.childNodes.length; i++) {
-            var bolletje = boardLine.childNodes[i];
-            bolletje.disabled = false;
+        if(lineID === "combination") {
+            var buttons = document.getElementById(lineID).childNodes;
+            Array.from(buttons).forEach( function(bol) {
+                bol.addEventListener("click", function clickColor(e) {
+                    var clickedButton = e.target;
+                    if(clickedButton.value === "8")
+                        clickedButton.value = "-1";
+                    clickedButton.innerHTML = colors[++clickedButton.value];
+                });
+            });
+        }
+        else {
+            var buttons = [];
+            var rightLine = document.getElementById(lineID);
+            for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
+                buttons.push(rightLine.childNodes[i].childNodes[0]);
+            }
+            Array.from(buttons).forEach( function(bol) {
+                bol.addEventListener("click", function clickColor(e) {
+                    var clickedButton = e.target;
+                    if(clickedButton.value === "8");
+                        clickedButton.value = "-1";
+                    clickedButton.innerHTML = colors[++clickedButton.value];
+                });
+            });
         }
     }
 
+    // window.changeColor = function(elemId) {
+    //     var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
+    //     var bol = document.getElementById(elemId);
+    //     if(bol.value === "8")
+    //         bol.value = "-1";
+    //     bol.innerHTML = colors[++bol.value];        
+    // };
 
 }
 
@@ -93,13 +135,18 @@ function PlayBoard(GameState) {
             gs.setPlayerType(incomingMsg.data); 
             
             if (gs.getPlayerType() == "A") {
-                //comb knoppen enable
+                //board.enableCombinationButtons();
                 alert("You're the codemaker. Please make a combination")
-                gs.wrongGuesses = gs.wrongGuesses + 3;
-                board.enableBoardLineButtons(gs.wrongGuesses);
+                //board.changeColor("combination");
+
+                //board.enableBoardLineButtons("1");
+                //board.changeColor("1");
+
             }
             else{
                 alert("You're the codebreaker. Please wait for a combination to break")
+                // gs.wrongGuesses = gs.wrongGuesses + 3;
+                // board.disableBoardLineButtons(gs.wrongGuesses);
             }
         }
 
