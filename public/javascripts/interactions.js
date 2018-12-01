@@ -1,5 +1,5 @@
 
-function GameState(socket) {
+function GameState(board, socket) {
     this.playerType = null;
     this.MAX_ALLOWED = Setup.MAX_ALLOWED_GUESSES;
     this.wrongGuesses = 0;
@@ -17,7 +17,12 @@ function GameState(socket) {
         this.playerType = p;
     };
 
-    this.setTargetCombi = function (combi) {
+    this.getTargetCombi = function() {
+        return this.targetCombi;
+    }
+
+    this.setTargetCombi = function () {
+        var combi = board.setTargetCombiByReady();
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
         this.targetCombi = combi;
     };
@@ -26,6 +31,7 @@ function GameState(socket) {
         this.wrongGuesses++;
     };
 
+    
     // this.whoWon = function(){
     //     if( this.wrongGuesses>Setup.MAX_ALLOWED_GUESSES){
     //         return "A";
@@ -41,82 +47,93 @@ function GameState(socket) {
 }
 
 
-function PlayBoard(GameState) {
+function PlayBoard() {
 
-    this.enableCombinationButtons = function() {
-        var combiLine = document.getElementById("combination");
-        for(var i=0; i<combiLine.childNodes.length; i++) {
-            combiLine.childNodes[i].disabled = false;
+    this.getButtonsByLine = function(lineID) {
+        var rightLine = document.getElementById(lineID);
+        buttons = rightLine.getElementsByTagName("button");
+        return buttons;
+    };
+
+    this.enableButtonsByLine = function(lineID) {
+        var buttons = this.getButtonsByLine(lineID);
+        for(var i=0; i<buttons.length; i++) {
+            buttons[i].disabled = false;
         }
     };
 
-    this.disableCombinationButtons = function() {
-        var combiLine = document.getElementById("combination");
-        for(var i=0; i<combiLine.childNodes.length; i++) {
-            combiLine.childNodes[i].disabled = true;
-        }
-    };
-
-    this.enableBoardLineButtons = function(guesses) {
-        var rightLine = document.getElementById(guesses);
-        for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
-            rightLine.childNodes[i].childNodes[0].disabled = false;
-        }
-    };
-
-    this.disableBoardLineButtons = function(guesses) {
-        var rightLine = document.getElementById(guesses);
-        for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
-            rightLine.childNodes[i].childNodes[0].disabled = true;
+    this.disableButtonsByLine = function(lineID) {
+        var buttons = this.getButtonsByLine(lineID);
+        for(var i=0; i<buttons.length; i++) {
+            buttons[i].disabled = true;
         }
     };
 
     this.enableReadyButton = function() {
         document.getElementById("readyButton").disabled = false;
-    }
+    };
 
     this.disableReadyButton = function() {
         document.getElementById("readyButton").disabled = true;
-    }
+    };
 
-    this.changeColor = function(lineID) {
-        var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
-        if(lineID === "combination") {
-            var buttons = document.getElementById(lineID).childNodes;
-            Array.from(buttons).forEach( function(bol) {
-                bol.addEventListener("click", function clickColor(e) {
-                    var clickedButton = e.target;
-                    if(clickedButton.value === "8")
-                        clickedButton.value = "-1";
-                    clickedButton.innerHTML = colors[++clickedButton.value];
-                });
-            });
-        }
-        else {
-            var buttons = [];
-            var rightLine = document.getElementById(lineID);
-            for(var i=1; i<rightLine.childNodes.length+1; i=i+2) {
-                buttons.push(rightLine.childNodes[i].childNodes[0]);
-            }
-            Array.from(buttons).forEach( function(bol) {
-                bol.addEventListener("click", function clickColor(e) {
-                    var clickedButton = e.target;
-                    if(clickedButton.value === "8");
-                        clickedButton.value = "-1";
-                    clickedButton.innerHTML = colors[++clickedButton.value];
-                });
-            });
-        }
-    }
+/* checkt of de 4 vakjes van combination al ingevuld zijn 
+maar weet nog steeds niet waar ik dat zou moeten aanroepen en wanneer */
 
-    // window.changeColor = function(elemId) {
-    //     var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
-    //     var bol = document.getElementById(elemId);
-    //     if(bol.value === "8")
-    //         bol.value = "-1";
-    //     bol.innerHTML = colors[++bol.value];        
+    // this.combinationMade = function() {
+    //     var combiButtons = this.getButtonsByLine("combination");
+    //     var counter = 0;
+    //     for(var i=0; i<combiButtons.length; i++) {
+    //         if(combiButtons[i].value != "-1" && combiButtons[i].value != "0")
+    //             counter++;
+    //     }
+    //     return counter === 4;
     // };
 
+/* probeerde te checken of alles ingevuld was en dan ready enable */
+
+    // this.checkReady = function() {
+    //     if(this.combinationMade()) {
+    //         this.enableReadyButton();
+    //     }
+    // };
+    
+    this.changeColor = function(lineID) {
+        var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
+        var buttons = this.getButtonsByLine(lineID);
+        // if(this.combinationMade()) {
+        //     this.enableReadyButton();
+        // }
+        Array.from(buttons).forEach( function(bol) {
+            bol.addEventListener("click", function clickColor(e) {
+                var clickedButton = e.target;
+                if(clickedButton.value === "8")
+                    clickedButton.value = "-1";
+                clickedButton.innerHTML = colors[++clickedButton.value];
+            });
+        });
+    };
+
+/*probeerde iets te schrijven dat combi opsloeg als er 4 dingen ingevuld zijn
+als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
+
+    // this.setTargetCombiByReady = function() {
+    //     if(this.combinationMade()) {
+    //         // var readyButton = document.getElementById("readyButton");
+    //         var combiButtons = this.getButtonsByLine("combination");
+    //         var madeCombi = [];
+    //         // readyButton.addEventListener("click", function singleClick(e) {
+    //             for(var i=0; i<combiButtons.length; i++) {
+    //                 madeCombi.push(combiButtons[i].innerHTML);
+    //             }
+    //         // });
+    //         return madeCombi;
+    //     }
+    //     else {
+    //         alert("You did not fill all the spaces of the combination")
+    //     }
+        
+    // };
 }
 
 
@@ -125,8 +142,8 @@ function PlayBoard(GameState) {
     
     var socket = new WebSocket(Setup.WEB_SOCKET_URL);
 
-    var gs = new GameState(socket);
-    var board = new PlayBoard(gs);
+    var board = new PlayBoard();
+    var gs = new GameState(board, socket);
 
     socket.onmessage = function (event) {
         let incomingMsg = JSON.parse(event.data);
@@ -135,19 +152,33 @@ function PlayBoard(GameState) {
             gs.setPlayerType(incomingMsg.data); 
             
             if (gs.getPlayerType() == "A") {
-                //board.enableCombinationButtons();
-                alert("You're the codemaker. Please make a combination")
-                //board.changeColor("combination");
+                console.log("hoi")
+                board.enableButtonsByLine("combination");
+                alert("You're the codemaker. Please make a combination");
+                
+                board.changeColor("combination");
 
-                //board.enableBoardLineButtons("1");
-                //board.changeColor("1");
+                // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
+                // for(var i=0; i<butties.length; i++) {
+                //     butties[i].onclick = board.changeColor();
+                // }
+                //board.disableReadyButton();
+                //document.getElementById("readyButton").onclick = board.setTargetCombiByReady();
+                //board.setTargetCombiByReady();
+                
 
+                //board.disableButtonsByLine("line1");
+                //board.changeColor("line1");
             }
             else{
                 alert("You're the codebreaker. Please wait for a combination to break")
                 // gs.wrongGuesses = gs.wrongGuesses + 3;
-                // board.disableBoardLineButtons(gs.wrongGuesses);
+                // board.enableBoardLineButtons("line"+gs.wrongGuesses);
             }
+        }
+
+        if(incomingMsg.type == Messages.T_TARGET_WORD && gs.getPlayerType == "B") {
+            
         }
 
     }
