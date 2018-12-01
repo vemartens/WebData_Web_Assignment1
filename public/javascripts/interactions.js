@@ -79,6 +79,7 @@ function PlayBoard() {
 
 /* checkt of de 4 vakjes van combination al ingevuld zijn 
 maar weet nog steeds niet waar ik dat zou moeten aanroepen en wanneer */
+/* het staat nu in changecolor... maar zou anders moeten kunnen i guess */
 
     // this.combinationMade = function() {
     //     var combiButtons = this.getButtonsByLine("combination");
@@ -90,26 +91,40 @@ maar weet nog steeds niet waar ik dat zou moeten aanroepen en wanneer */
     //     return counter === 4;
     // };
 
-/* probeerde te checken of alles ingevuld was en dan ready enable */
+/* probeerde te checken of alles ingevuld was en dan ready enable
+dit staat nu allemaal soort van in changecolor....... */
 
     // this.checkReady = function() {
     //     if(this.combinationMade()) {
     //         this.enableReadyButton();
     //     }
     // };
+
     
     this.changeColor = function(lineID) {
         var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
         var buttons = this.getButtonsByLine(lineID);
-        // if(this.combinationMade()) {
-        //     this.enableReadyButton();
-        // }
+        
         Array.from(buttons).forEach( function(bol) {
             bol.addEventListener("click", function clickColor(e) {
                 var clickedButton = e.target;
                 if(clickedButton.value === "8")
                     clickedButton.value = "-1";
                 clickedButton.innerHTML = colors[++clickedButton.value];
+            });
+    //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
+    //en anders disable weer (als je na cycle weer op O komt)
+    //niet netjes hier,maar kon geen andere manier vinden
+            bol.addEventListener("click", function checkReady() {
+                var counter = 0;
+                for(var i=0; i<buttons.length; i++) {
+                    if(buttons[i].value != "-1" && buttons[i].value != "0")
+                        counter++;
+                }
+                if(counter === 4)
+                    document.getElementById("readyButton").disabled = false;
+                else
+                    document.getElementById("readyButton").disabled = true;
             });
         });
     };
@@ -155,7 +170,6 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                 console.log("hoi")
                 board.enableButtonsByLine("combination");
                 alert("You're the codemaker. Please make a combination");
-                
                 board.changeColor("combination");
 
                 // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
