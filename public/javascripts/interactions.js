@@ -112,6 +112,21 @@ dit staat nu allemaal soort van in changecolor....... */
                     clickedButton.value = "-1";
                 clickedButton.innerHTML = colors[++clickedButton.value];
             });
+
+    this.checkColor = function(lineID) {
+        var colors = ["O", "White", "Red"];
+        var buttons = this.getButtonByLine(lineID);
+
+        Array.from(buttons).forEach( function(bol){
+            bol.addEventListener("click", function clickCheckColor(e){
+                var clickedButton = e.target;
+                if (clickedButton.value === "2")
+                    clickedButton.value = "-1";
+                clickedButton.innerHTML = colors[++clickedButton.value]
+            })
+        })        
+    }
+
     //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
     //en anders disable weer (als je na cycle weer op O komt)
     //niet netjes hier,maar kon geen andere manier vinden
@@ -158,6 +173,7 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
     var socket = new WebSocket(Setup.WEB_SOCKET_URL);
 
     var board = new PlayBoard();
+    var checkboard = new PlayBoard();
     var gs = new GameState(board, socket);
 
     socket.onmessage = function (event) {
@@ -171,6 +187,9 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                 board.enableButtonsByLine("combination");
                 alert("You're the codemaker. Please make a combination");
                 board.changeColor("combination");
+
+                checkboard.enableButtonsByLine("line20");
+                checkboard.checkColor("line20");
 
                 // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
                 // for(var i=0; i<butties.length; i++) {
