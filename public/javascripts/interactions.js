@@ -113,19 +113,6 @@ dit staat nu allemaal soort van in changecolor....... */
                 clickedButton.innerHTML = colors[++clickedButton.value];
             });
 
-    this.checkColor = function(lineID) {
-        var colors = ["O", "White", "Red"];
-        var buttons = this.getButtonByLine(lineID);
-
-        Array.from(buttons).forEach( function(bol){
-            bol.addEventListener("click", function clickCheckColor(e){
-                var clickedButton = e.target;
-                if (clickedButton.value === "2")
-                    clickedButton.value = "-1";
-                clickedButton.innerHTML = colors[++clickedButton.value]
-            })
-        })        
-    }
 
     //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
     //en anders disable weer (als je na cycle weer op O komt)
@@ -143,6 +130,21 @@ dit staat nu allemaal soort van in changecolor....... */
             });
         });
     };
+
+    this.checkColor = function(lineID) {
+        var colors = ["O", "White", "Red"];
+        var buttons = this.getButtonsByLine(lineID);
+        console.log
+
+        Array.from(buttons).forEach( function(bol){
+            bol.addEventListener("click", function clickCheckColor(e){
+                var clickedButton = e.target;
+                if (clickedButton.value === "2")
+                    clickedButton.value = "-1";
+                clickedButton.innerHTML = colors[++clickedButton.value]
+            })
+        })        
+    }
 
 /*probeerde iets te schrijven dat combi opsloeg als er 4 dingen ingevuld zijn
 als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
