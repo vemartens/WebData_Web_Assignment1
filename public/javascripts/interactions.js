@@ -6,7 +6,8 @@ function GameState(socket) {
     this.ready = false;
 
     this.targetCombi = [];
-
+    this.guessedCombi = [];
+    this.checkCombi = [];
 
     this.getPlayerType = function () {
         return this.playerType;
@@ -26,9 +27,31 @@ function GameState(socket) {
         this.targetCombi = combi;
     };
 
+    this.getGuessedCombi = function() {
+        return this.guessedCombi;
+    }
+
+    this.setGuessedCombi = function(combi) {
+        console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
+        this.guessedCombi = combi;
+    }
+
+    this.getCheckCombi = function() {
+        return this.checkCombi;
+    }
+
+    this.setCheckCombi = function(combi) {
+        console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
+        this.checkCombi = combi;
+    }
+
     this.incrWrongGuess = function(){
         this.wrongGuesses++;
     };
+
+    this.getWrongGuesses = function() {
+        return this.wrongGuesses;
+    }
 
     
     // this.whoWon = function(){
@@ -48,6 +71,7 @@ function GameState(socket) {
 
 function PlayBoard(gs) {
 
+    var that = this;
     this.getButtonsByLine = function(lineID) {
         var rightLine = document.getElementById(lineID);
         buttons = rightLine.getElementsByTagName("button");
@@ -118,6 +142,7 @@ dit staat nu allemaal soort van in changecolor....... */
     // bol.onclick = function(event) {
     //     checkReady();
     // }
+
             bol.addEventListener("click", function checkReady() {
                 var counter = 0;
                 for(var i=0; i<buttons.length; i++) {
@@ -159,16 +184,12 @@ dit staat nu allemaal soort van in changecolor....... */
         });        
     };
 
-/*probeerde iets te schrijven dat combi opsloeg als er 4 dingen ingevuld zijn
-als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
-
     this.setTargetCombiByReady = function() {
         var madeCombi = [];
         var combiButtons = this.getButtonsByLine("combination");
         for(var i=0; i<combiButtons.length; i++) {
             madeCombi.push(combiButtons[i].innerHTML);
         }
-        console.log("hoi "+madeCombi[0]);
         gs.setTargetCombi(madeCombi);
         // }
         // else {
@@ -176,17 +197,47 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
         // } 
     };
 
-    // this.setTargetCombiByReady = function() {
-    //     var madeCombi = [];
-    //     var readyButton = document.getElementById("readyButton");
-    //     readyButton.addEventListener("click", function singleClick() {
-    //         var combiButtons = this.getButtonsByLine("combination");
-    //         for(var i=0; i<combiButtons.length; i++) {
-    //             madeCombi.push(combiButtons[i].innerHTML);
-    //         }
-    //     });
-    //     gs.setTargetCombi(madeCombi);
-    // } 
+    this.hideTargetWord = function() {
+        var combiButtons = this.getButtonsByLine("combination");
+        for(var i=0; i<combiButtons.length; i++) {
+            combiButtons[i].innerHTML = "?";
+        }
+    }
+
+    this.setGuessByReady = function() {
+        var madeGuess = [];
+        var guessButtons = this.getButtonsByLine("line" + gs.getWrongGuesses());
+        for(var i=0; i<guessButtons.length; i++) {
+            madeGuess.push(guessButtons[i].innerHTML);
+        }
+        gs.setGuessedCombi(madeGuess);
+    };
+
+    this.setGuessedCombiPlayerA = function() {
+        guessCombi = gs.getGuessedCombi();
+        var guessButtons = this.getButtonsByLine("line" + gs.getWrongGuesses());
+        for(var i=0; i<guessButtons.length; i++) {
+            guessButtons[i].innerHTML = guessCombi[i];
+        }
+    }
+
+    this.setCheckByReady = function() {
+        var madeCheck = [];
+        var checkButtons = this.getButtonsByLine("check" + gs.getWrongGuesses());
+        for(var i=0; i<guessButtons.length; i++) {
+            madeCheck.push(checkButtons[i].innerHTML);
+        }
+        gs.setCheckCombi(madeCheck);
+    };
+
+    this.setCheckedCombiPlayerB = function() {
+        checkCombi = gs.getCheckedCombi();
+        var checkButtons = this.getButtonsByLine("check" + gs.getWrongGuesses());
+        for(var i=0; i<checkButtons.length; i++) {
+            checkButtons[i].innerHTML = checkCombi[i];
+        }
+    }    
+
 }
 
 
@@ -214,38 +265,83 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                     board.setTargetCombiByReady();
                     document.getElementById("readyButton").disabled = true;
                     alert("Please wait for the first combination to check");
+                    board.disableButtonsByLine("combination");
+                    let outgoingMsg = Messages.O_TARGET_COMBI;
+                    outgoingMsg.data = gs.getTargetCombi();
+                    socket.send(JSON.stringify(outgoingMsg));
+
+                    //document.getElementById("readyButton").removeEventListener("click", singleClick, false);
                 });
-
-                gs.setPlayerType();
-                //board.enableButtonsByLine("check10");
-                //board.activeCheckButtons("check10");
-
-                // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
-                // for(var i=0; i<butties.length; i++) {
-                //     butties[i].onclick = board.changeColor();
-                // }
-                //board.disableReadyButton();
-                //document.getElementById("readyButton").onclick = board.setTargetCombiByReady();
-                //board.setTargetCombiByReady();
-                
-
-                //board.disableButtonsByLine("line1");
-                //board.changeColor("line1");
             }
             else{
                 alert("You're the codebreaker. Please wait for a combination to break")
-                // gs.wrongGuesses = gs.wrongGuesses + 3;
-                // board.enableBoardLineButtons("line"+gs.wrongGuesses);
             }
         }
 
+        if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
+            board.hideTargetWord();
+            gs.setTargetCombi(incomingMsg.data);
+            alert("The combination is made. Please make a guess!");
+            gs.incrWrongGuess();
+            board.enableButtonsByLine("line"+gs.getWrongGuesses());
+            board.activateLineButtons("line"+gs.getWrongGuesses());
+
+            document.getElementById("readyButton").addEventListener("click", function(){
+                board.setGuessByReady();
+                document.getElementById("readyButton").disabled = true;
+                alert("Please wait till your guess is checked");
+                board.disableButtonsByLine("line"+gs.getWrongGuesses());
+                
+                let outgoingMsg = Messages.OCHECK_RESULT;
+                outgoingMsg.data = gs.getGuessedCombi();
+                socket.send(JSON.stringify(outgoingMsg));
+            });
+        }
+
+        if(incomingMsg.type == Messages.T_CHECK_RESULT && gs.getPlayerType == "A") {
+            gs.setGuessedCombi(incomingMsg.data);
+            board.setGuessedCombiPlayerA();
+            alert("The guess is made. Please check!");
+            gs.incrWrongGuess();
+            board.enableButtonsByLine("check"+gs.getWrongGuesses());
+            board.activeCheckButtons("check"+gs.getWrongGuesses());
+
+            document.getElementById("readyButton").addEventListener("click", function(){
+                board.setCheckByReady();
+                document.getElementById("readyButton").disabled = true;
+                alert("Please wait till another guess is made");
+                board.disableButtonsByLine("check"+gs.getWrongGuesses());
+                
+                let outgoingMsg = Messages.O_MAKE_A_GUESS;
+                outgoingMsg.data = gs.getCheckCombi();
+                socket.send(JSON.stringify(outgoingMsg));
+            });
+        }
+
         if(incomingMsg.type == Messages.T_MAKE_A_GUESS && gs.getPlayerType == "B") {
-            console.log("youuu");
-        }
+            gs.setCheckedCombi(incomingMsg.data);
+            board.setCheckedCombiPlayerA();
+            alert("The guess is made. Please check!");
+            gs.incrWrongGuess();
+            board.enableButtonsByLine("check"+gs.getWrongGuesses());
+            board.activeGuessedButtons("check"+gs.getWrongGuesses());
 
-        if(incomingMsg.type == Messages.T_TARGET_WORD && gs.getPlayerType == "B") {
-
+            document.getElementById("readyButton").addEventListener("click", function(){
+                board.setGuessByReady();
+                document.getElementById("readyButton").disabled = true;
+                alert("Please wait till your guess is checked");
+                board.disableButtonsByLine("line"+gs.getWrongGuesses());
+                
+                let outgoingMsg = Messages.O_CHECK_RESULT;
+                outgoingMsg.data = gs.getGuessedCombi();
+                socket.send(JSON.stringify(outgoingMsg));
+            });
+            
+            // gs.wrongGuesses = gs.wrongGuesses + 3;
+            // board.enableBoardLineButtons("line"+gs.wrongGuesses);
         }
+                    
+        
 
     }
 

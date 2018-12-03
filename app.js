@@ -79,6 +79,7 @@ wss.on("connection", function connection(ws) {
             }
         }
         else if (isPlayerA) {
+            //missch omdraaien
             if(oMsg.type == messages.T_CHECK_RESULT) {
                 gameObj.playerB.send(message);
                 gameObj.setStatus("GUESS CHECKED")
