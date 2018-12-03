@@ -21,7 +21,7 @@ function GameState(socket) {
         return this.targetCombi;
     }
 
-    this.setTargetCombi = function () {
+    this.setTargetCombi = function (combi) {
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
         this.targetCombi = combi;
     };
@@ -164,22 +164,29 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
 
     this.setTargetCombiByReady = function() {
         var madeCombi = [];
-        var readyButton = document.getElementById("readyButton");
-        if(readyButton.disabled) {
-            var combiButtons = this.getButtonsByLine("combination").getElementsByTagName("buttons");
-            for(var i=0; i<combiButtons.length; i++) {
-                madeCombi.push(combiButtons[i].innerHTML);
-            }
-            readyButton.addEventListener("click", function singleClick() {
-            //moet eigenlijk bij klikken op ready..
-            });
-            gs.setTargetCombi(madeCombi);
-        }   
+        var combiButtons = this.getButtonsByLine("combination");
+        for(var i=0; i<combiButtons.length; i++) {
+            madeCombi.push(combiButtons[i].innerHTML);
+        }
+        console.log("hoi "+madeCombi[0]);
+        gs.setTargetCombi(madeCombi);
         // }
         // else {
         //     alert("You did not fill all the spaces of the combination")
         // } 
     };
+
+    // this.setTargetCombiByReady = function() {
+    //     var madeCombi = [];
+    //     var readyButton = document.getElementById("readyButton");
+    //     readyButton.addEventListener("click", function singleClick() {
+    //         var combiButtons = this.getButtonsByLine("combination");
+    //         for(var i=0; i<combiButtons.length; i++) {
+    //             madeCombi.push(combiButtons[i].innerHTML);
+    //         }
+    //     });
+    //     gs.setTargetCombi(madeCombi);
+    // } 
 }
 
 
@@ -199,13 +206,19 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
             gs.setPlayerType(incomingMsg.data); 
             
             if (gs.getPlayerType() == "A") {
-                console.log("hoi")
                 board.enableButtonsByLine("combination");
                 alert("You're the codemaker. Please make a combination");
                 board.activateLineButtons("combination");
+                
+                document.getElementById("readyButton").addEventListener("click", function(){
+                    board.setTargetCombiByReady();
+                    document.getElementById("readyButton").disabled = true;
+                    alert("Please wait for the first combination to check");
+                });
 
-                board.enableButtonsByLine("check10");
-                board.activeCheckButtons("check10");
+                gs.setPlayerType(T_MAKE_A_GUESS);
+                //board.enableButtonsByLine("check10");
+                //board.activeCheckButtons("check10");
 
                 // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
                 // for(var i=0; i<butties.length; i++) {
@@ -226,8 +239,12 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
             }
         }
 
+        if(incomingMsg.type == Messages.T_MAKE_A_GUESS && gs.getPlayerType == "B") {
+            console.log("youuu");
+        }
+
         if(incomingMsg.type == Messages.T_TARGET_WORD && gs.getPlayerType == "B") {
-            
+
         }
 
     }
@@ -236,11 +253,11 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
         socket.send("{}");
     };
 
-    socket.onclose = function(){
-        if(gs.whoWon()==null){
-           // sb.setStatus(Status["aborted"]);
-        }
-    };
+    // socket.onclose = function(){
+    //     if(gs.whoWon()==null){
+    //        //sb.setStatus(Status["aborted"]);
+    //     }
+    // };
 
     socket.onerror = function(){  
     };
