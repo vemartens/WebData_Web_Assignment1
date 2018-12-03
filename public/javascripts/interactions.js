@@ -216,7 +216,7 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                     alert("Please wait for the first combination to check");
                 });
 
-                gs.setPlayerType(T_MAKE_A_GUESS);
+                gs.setPlayerType();
                 //board.enableButtonsByLine("check10");
                 //board.activeCheckButtons("check10");
 
