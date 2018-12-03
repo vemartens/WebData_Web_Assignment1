@@ -195,8 +195,8 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                 alert("You're the codemaker. Please make a combination");
                 board.changeColor("combination");
 
-                checkboard.enableButtonsByLine("line20");
-                checkboard.checkColor("line20");
+                checkboard.enableButtonsByLine("check10");
+                checkboard.checkColor("check10");
 
                 // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
                 // for(var i=0; i<butties.length; i++) {
