@@ -113,10 +113,15 @@ dit staat nu allemaal soort van in changecolor....... */
                 clickedButton.innerHTML = colors[++clickedButton.value];
             });
 
+           
+
 
     //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
     //en anders disable weer (als je na cycle weer op O komt)
     //niet netjes hier,maar kon geen andere manier vinden
+    // bol.onclick = function(event) {
+    //     checkReady();
+    // }
             bol.addEventListener("click", function checkReady() {
                 var counter = 0;
                 for(var i=0; i<buttons.length; i++) {
