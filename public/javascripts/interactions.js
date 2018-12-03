@@ -1,5 +1,5 @@
 
-function GameState(board, socket) {
+function GameState(socket) {
     this.playerType = null;
     this.MAX_ALLOWED = Setup.MAX_ALLOWED_GUESSES;
     this.wrongGuesses = 0;
@@ -22,7 +22,6 @@ function GameState(board, socket) {
     }
 
     this.setTargetCombi = function () {
-        var combi = board.setTargetCombiByReady();
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
         this.targetCombi = combi;
     };
@@ -47,7 +46,7 @@ function GameState(board, socket) {
 }
 
 
-function PlayBoard() {
+function PlayBoard(gs) {
 
     this.getButtonsByLine = function(lineID) {
         var rightLine = document.getElementById(lineID);
@@ -101,20 +100,17 @@ dit staat nu allemaal soort van in changecolor....... */
     // };
 
     
-    this.changeColor = function(lineID) {
+    this.activateLineButtons = function(lineID) {
         var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
         var buttons = this.getButtonsByLine(lineID);
         
         Array.from(buttons).forEach( function(bol) {
-            bol.addEventListener("click", function clickColor(e) {
+            bol.addEventListener("click", function changeColor(e) {
                 var clickedButton = e.target;
                 if(clickedButton.value === "8")
                     clickedButton.value = "-1";
                 clickedButton.innerHTML = colors[++clickedButton.value];
             });
-
-           
-
 
     //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
     //en anders disable weer (als je na cycle weer op O komt)
@@ -136,41 +132,54 @@ dit staat nu allemaal soort van in changecolor....... */
         });
     };
 
-    this.checkColor = function(lineID) {
+    this.activeCheckButtons = function(lineID) {
         var colors = ["O", "White", "Red"];
         var buttons = this.getButtonsByLine(lineID);
         console.log
 
         Array.from(buttons).forEach( function(bol){
-            bol.addEventListener("click", function clickCheckColor(e){
+            bol.addEventListener("click", function changeCheckColor(e){
                 var clickedButton = e.target;
                 if (clickedButton.value === "2")
                     clickedButton.value = "-1";
                 clickedButton.innerHTML = colors[++clickedButton.value]
-            })
-        })        
-    }
+            });
+
+            bol.addEventListener("click", function checkReady() {
+                var counter = 0;
+                for(var i=0; i<buttons.length; i++) {
+                    if(buttons[i].value != "-1" && buttons[i].value != "0")
+                        counter++;
+                }
+                if(counter === 4)
+                    document.getElementById("readyButton").disabled = false;
+                else
+                    document.getElementById("readyButton").disabled = true;
+            });
+        });        
+    };
 
 /*probeerde iets te schrijven dat combi opsloeg als er 4 dingen ingevuld zijn
 als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
 
-    // this.setTargetCombiByReady = function() {
-    //     if(this.combinationMade()) {
-    //         // var readyButton = document.getElementById("readyButton");
-    //         var combiButtons = this.getButtonsByLine("combination");
-    //         var madeCombi = [];
-    //         // readyButton.addEventListener("click", function singleClick(e) {
-    //             for(var i=0; i<combiButtons.length; i++) {
-    //                 madeCombi.push(combiButtons[i].innerHTML);
-    //             }
-    //         // });
-    //         return madeCombi;
-    //     }
-    //     else {
-    //         alert("You did not fill all the spaces of the combination")
-    //     }
-        
-    // };
+    this.setTargetCombiByReady = function() {
+        var madeCombi = [];
+        var readyButton = document.getElementById("readyButton");
+        if(readyButton.disabled) {
+            var combiButtons = this.getButtonsByLine("combination").getElementsByTagName("buttons");
+            for(var i=0; i<combiButtons.length; i++) {
+                madeCombi.push(combiButtons[i].innerHTML);
+            }
+            readyButton.addEventListener("click", function singleClick() {
+            //moet eigenlijk bij klikken op ready..
+            });
+            gs.setTargetCombi(madeCombi);
+        }   
+        // }
+        // else {
+        //     alert("You did not fill all the spaces of the combination")
+        // } 
+    };
 }
 
 
@@ -179,9 +188,9 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
     
     var socket = new WebSocket(Setup.WEB_SOCKET_URL);
 
-    var board = new PlayBoard();
-    var checkboard = new PlayBoard();
-    var gs = new GameState(board, socket);
+    var gs = new GameState(socket);
+    var board = new PlayBoard(gs);
+
 
     socket.onmessage = function (event) {
         let incomingMsg = JSON.parse(event.data);
@@ -193,10 +202,10 @@ als je op ready hebt geklikt, en anders zegt dat je het moet invullen;*/
                 console.log("hoi")
                 board.enableButtonsByLine("combination");
                 alert("You're the codemaker. Please make a combination");
-                board.changeColor("combination");
+                board.activateLineButtons("combination");
 
-                checkboard.enableButtonsByLine("check10");
-                checkboard.checkColor("check10");
+                board.enableButtonsByLine("check10");
+                board.activeCheckButtons("check10");
 
                 // var butties = board.getButtonsByLine("combination").getElementsByTagName("button");
                 // for(var i=0; i<butties.length; i++) {
