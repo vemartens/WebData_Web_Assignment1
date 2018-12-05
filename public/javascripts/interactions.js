@@ -72,6 +72,7 @@ function GameState(socket) {
 function PlayBoard(gs) {
 
     var that = this;
+    
     this.getButtonsByLine = function(lineID) {
         var rightLine = document.getElementById(lineID);
         buttons = rightLine.getElementsByTagName("button");
@@ -292,7 +293,7 @@ dit staat nu allemaal soort van in changecolor....... */
                 alert("Please wait till your guess is checked");
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
                 
-                let outgoingMsg = Messages.OCHECK_RESULT;
+                let outgoingMsg = Messages.O_CHECK_RESULT;
                 outgoingMsg.data = gs.getGuessedCombi();
                 socket.send(JSON.stringify(outgoingMsg));
             });
@@ -318,31 +319,26 @@ dit staat nu allemaal soort van in changecolor....... */
             });
         }
 
-        if(incomingMsg.type == Messages.T_MAKE_A_GUESS && gs.getPlayerType == "B") {
-            gs.setCheckedCombi(incomingMsg.data);
-            board.setCheckedCombiPlayerA();
-            alert("The guess is made. Please check!");
-            gs.incrWrongGuess();
-            board.enableButtonsByLine("check"+gs.getWrongGuesses());
-            board.activeGuessedButtons("check"+gs.getWrongGuesses());
+        // if(incomingMsg.type == Messages.T_MAKE_A_GUESS && gs.getPlayerType == "B") {
+        //     gs.setCheckedCombi(incomingMsg.data);
+        //     board.setCheckedCombiPlayerA();
+        //     alert("The guess is made. Please check!");
+        //     gs.incrWrongGuess();
+        //     board.enableButtonsByLine("check"+gs.getWrongGuesses());
+        //     board.activeGuessedButtons("check"+gs.getWrongGuesses());
 
-            document.getElementById("readyButton").addEventListener("click", function(){
-                board.setGuessByReady();
-                document.getElementById("readyButton").disabled = true;
-                alert("Please wait till your guess is checked");
-                board.disableButtonsByLine("line"+gs.getWrongGuesses());
+        //     document.getElementById("readyButton").addEventListener("click", function(){
+        //         board.setGuessByReady();
+        //         document.getElementById("readyButton").disabled = true;
+        //         alert("Please wait till your guess is checked");
+        //         board.disableButtonsByLine("line"+gs.getWrongGuesses());
                 
-                let outgoingMsg = Messages.O_CHECK_RESULT;
-                outgoingMsg.data = gs.getGuessedCombi();
-                socket.send(JSON.stringify(outgoingMsg));
-            });
-            
-            // gs.wrongGuesses = gs.wrongGuesses + 3;
-            // board.enableBoardLineButtons("line"+gs.wrongGuesses);
-        }
+        //         let outgoingMsg = Messages.O_CHECK_RESULT;
+        //         outgoingMsg.data = gs.getGuessedCombi();
+        //         socket.send(JSON.stringify(outgoingMsg));
+        //     });
+        // }
                     
-        
-
     }
 
     socket.onopen = function(){
