@@ -53,6 +53,19 @@ function GameState(socket) {
         return this.wrongGuesses;
     }
 
+/*~*/
+    this.updateGame = function() {
+        var outgoingMsg = Messages.O_GUESS_OR_CHECK; //Messages.O_MAKE_A_GUESS;
+        if(this.getPlayerType() == "A")
+            outgoingMsg.data = this.getCheckCombi();
+        else
+            outgoingMsg.data = this.getGuessedCombi();
+        
+
+        socket.send(JSON.stringify(outgoingMsg));
+        alert("er is iets gebeurd joepie");
+
+    }
     
     // this.whoWon = function(){
     //     if( this.wrongGuesses>Setup.MAX_ALLOWED_GUESSES){
@@ -293,35 +306,38 @@ dit staat nu allemaal soort van in changecolor....... */
                 alert("Please wait till your guess is checked");
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
                 
-                let outgoingMsg = Messages.O_CHECK_RESULT;
-                outgoingMsg.data = gs.getGuessedCombi();
-                socket.send(JSON.stringify(outgoingMsg));
+                // let outgoingMsg = Messages.O_CHECK_RESULT;
+                // outgoingMsg.data = gs.getGuessedCombi();
+                // socket.send(JSON.stringify(outgoingMsg));
+
+            /*~*/
+                gs.updateGame();
             });
         }
 
-        if(incomingMsg.type == Messages.T_CHECK_RESULT && gs.getPlayerType == "A") {
-            gs.setGuessedCombi(incomingMsg.data);
-            board.setGuessedCombiPlayerA();
-            alert("The guess is made. Please check!");
-            gs.incrWrongGuess();
-            board.enableButtonsByLine("check"+gs.getWrongGuesses());
-            board.activeCheckButtons("check"+gs.getWrongGuesses());
+        // if(incomingMsg.type == Messages.T_CHECK_RESULT && gs.getPlayerType == "A") {
+        //     gs.setGuessedCombi(incomingMsg.data);
+        //     board.setGuessedCombiPlayerA();
+        //     alert("The guess is made. Please check!");
+        //     gs.incrWrongGuess();
+        //     board.enableButtonsByLine("check"+gs.getWrongGuesses());
+        //     board.activeCheckButtons("check"+gs.getWrongGuesses());
 
-            document.getElementById("readyButton").addEventListener("click", function(){
-                board.setCheckByReady();
-                document.getElementById("readyButton").disabled = true;
-                alert("Please wait till another guess is made");
-                board.disableButtonsByLine("check"+gs.getWrongGuesses());
+        //     document.getElementById("readyButton").addEventListener("click", function(){
+        //         board.setCheckByReady();
+        //         document.getElementById("readyButton").disabled = true;
+        //         alert("Please wait till another guess is made");
+        //         board.disableButtonsByLine("check"+gs.getWrongGuesses());
                 
-                let outgoingMsg = Messages.O_MAKE_A_GUESS;
-                outgoingMsg.data = gs.getCheckCombi();
-                socket.send(JSON.stringify(outgoingMsg));
-            });
-        }
-
-        // if(incomingMsg.type == Messages.T_MAKE_A_GUESS && gs.getPlayerType == "B") {
+        //         let outgoingMsg = Messages.O_MAKE_A_GUESS;
+        //         outgoingMsg.data = gs.getCheckCombi();
+        //         socket.send(JSON.stringify(outgoingMsg));
+        //     });
+        // }
+                                            /*~*/
+        // if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "B") {
         //     gs.setCheckedCombi(incomingMsg.data);
-        //     board.setCheckedCombiPlayerA();
+        //     board.setCheckedCombiPlayerB();
         //     alert("The guess is made. Please check!");
         //     gs.incrWrongGuess();
         //     board.enableButtonsByLine("check"+gs.getWrongGuesses());
@@ -333,13 +349,38 @@ dit staat nu allemaal soort van in changecolor....... */
         //         alert("Please wait till your guess is checked");
         //         board.disableButtonsByLine("line"+gs.getWrongGuesses());
                 
-        //         let outgoingMsg = Messages.O_CHECK_RESULT;
-        //         outgoingMsg.data = gs.getGuessedCombi();
-        //         socket.send(JSON.stringify(outgoingMsg));
+        //         // let outgoingMsg = Messages.O_CHECK_RESULT;
+        //         // outgoingMsg.data = gs.getGuessedCombi();
+        //         // socket.send(JSON.stringify(outgoingMsg));
+
+        //     /*~*/
+        //         gs.updateGame();
         //     });
         // }
+
+
+    /*~*/
+        if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "A") {
+            alert("hoi");
+            // gs.setGuessedCombi(incomingMsg.data);
+            // board.setGuessedCombiPlayerA();
+            // alert("The guess is made. Please check!");
+            // gs.incrWrongGuess();
+            // board.enableButtonsByLine("check"+gs.getWrongGuesses());
+            // board.activeCheckButtons("check"+gs.getWrongGuesses());
+
+            // document.getElementById("readyButton").addEventListener("click", function(){
+            //     board.setCheckByReady();
+            //     document.getElementById("readyButton").disabled = true;
+            //     alert("Please wait till another guess is made");
+            //     board.disableButtonsByLine("check"+gs.getWrongGuesses());
+            
+            //     //gs.updateGame();
+            // });
+            gs.updateGame();
+        }
                     
-    }
+    };
 
     socket.onopen = function(){
         socket.send("{}");

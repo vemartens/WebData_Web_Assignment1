@@ -80,6 +80,16 @@
     };
 
 
+    
+/*~*/
+    exports.T_GUESS_OR_CHECK = "SET-GUESS-OR-CHECK";
+    exports.O_GUESS_OR_CHECK = {
+        type: exports.T_GUESS_OR_CHECK,
+        data: null
+    };
+
+
+
     /* Server to Player A & B: game over with result won/loss 
      */
     exports.T_GAME_OVER = "GAME-OVER";              
