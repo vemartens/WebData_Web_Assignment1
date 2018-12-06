@@ -80,24 +80,23 @@ wss.on("connection", function connection(ws) {
             }
         }
         else if (isPlayerA) {
-        //     //missch omdraaien
-        //     // if(oMsg.type == messages.T_CHECK_RESULT) {
-        //     //     gameObj.playerB.send(message);
-        //     //     gameObj.setStatus("GUESS CHECKED");
-        //     // }
 
             if(oMsg.type == messages.T_GUESS_OR_CHECK) {
                 gameObj.playerB.send(message);
                 gameObj.setStatus("GUESS CHECKED");
             }
-
-        //     if(oMsg.type == message.T_GAME_WON_BY) {
-        //         gameObj.setStatus(oMsg.data);
-        //         gameStatus.gamesCompleted++;
-        //     }
+            
+            console.log("er is een winnaar")
+            if(oMsg.type == messages.T_GAME_WON_BY) {
+                console.log("in if statement");
+                gameObj.playerB.send(message);
+                console.log("bericht verzonden");
+                gameObj.setStatus(oMsg.data);
+                gameStatus.gamesCompleted++;
+            }
         }
         else {
-            if(oMsg.type == messages.T_GUESS_OR_CHECK){ //T_MAKE_A_GUESS) {
+            if(oMsg.type == messages.T_GUESS_OR_CHECK){
                 gameObj.playerA.send(message);
                 gameObj.setStatus("COMBI GUESSED");
             }

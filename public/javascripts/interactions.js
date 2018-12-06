@@ -53,29 +53,57 @@ function GameState(socket) {
         return this.wrongGuesses;
     }
 
-    this.updateGame = function() {
-        var outgoingMsg = Messages.O_GUESS_OR_CHECK; //Messages.O_MAKE_A_GUESS;
+    this.checkIsAllRed = function() {
+        var counter = 0;
+        for(var i=0; i<this.getCheckCombi().length; i++) {
+            if(this.getCheckCombi()[i] == "Red") {
+                counter++;
+            }
+        }
+        return counter == 4;
+    }
+    
+    this.whoWon = function(){
+        if(this.wrongGuesses == Setup.MAX_ALLOWED_GUESSES && !this.checkIsAllRed()){
+            return "A";
+        }
+        
+        if(this.checkIsAllRed()) {
+            return "B";
+        }
+        return null;
+    };
 
+    this.updateGame = function() {
+        var outgoingMsg = Messages.O_GUESS_OR_CHECK;
+        
         if(this.getPlayerType() === "A")
             outgoingMsg.data = this.getCheckCombi();
         else
             outgoingMsg.data = this.getGuessedCombi();
 
         socket.send(JSON.stringify(outgoingMsg));
-        console.log("bericht is verzonden");
-    }
-    
-    // this.whoWon = function(){
-    //     if( this.wrongGuesses>Setup.MAX_ALLOWED_GUESSES){
-    //         return "A";
-    //     }
 
-    // /*als guessed combi is equal to target combi */
+        let winner = this.whoWon();
 
-    //         return "B";
-    //     }
-    //     return null;
-    // };
+        if (winner != null){
+            let alertString;
+            if( winner == this.playerType){
+                alertString = "Congratulation! You won!";
+            }
+            else {
+                alertString = "Game over. You lost..."
+            }
+            alertString += "\n <a href='/'>Play again!</a>";
+            alert(alertString);
+
+            let finalMsg = Messages.O_GAME_WON_BY;
+            finalMsg.data = winner;
+            socket.send(JSON.stringify(finalMsg));
+
+            //socket.close();
+        }
+    };
 
 }
 
@@ -150,7 +178,7 @@ function PlayBoard(gs) {
         });
     };
 
-    this.activeCheckButtons = function(lineID) {
+    this.activateCheckButtons = function(lineID) {
         var colors = ["O", "White", "Red"];
         var buttons = this.getButtonsByLine(lineID);
 
@@ -210,8 +238,8 @@ function PlayBoard(gs) {
         gs.setCheckCombi(madeCheck);
     };
 
-    this.setCheckedCombiPlayerB = function() {
-        checkCombi = gs.getCheckedCombi();
+    this.setCheckCombiPlayerB = function() {
+        checkCombi = gs.getCheckCombi();
         var checkButtons = this.getButtonsByLine("check" + gs.getWrongGuesses());
         for(var i=0; i<checkButtons.length; i++) {
             checkButtons[i].innerHTML = checkCombi[i];
@@ -239,13 +267,13 @@ function PlayBoard(gs) {
             
             if (gs.getPlayerType() == "A") {
                 board.enableButtonsByLine("combination");
-                alert("You're the codemaker. Please make a combination");
+                //alert("You're the codemaker. Please make a combination");
                 board.activateLineButtons("combination");
                 
                 document.getElementById("readyButton").addEventListener("click", function combiReady(){
                     board.setTargetCombiByReady();
                     board.disableReadyButton();
-                    alert("Please wait for the first guess to check");
+                    //alert("Please wait for the first guess to check");
                     board.disableButtonsByLine("combination");
                     
                     let outgoingMsg = Messages.O_TARGET_COMBI;
@@ -263,7 +291,8 @@ function PlayBoard(gs) {
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
             board.hideTargetWord();
             gs.setTargetCombi(incomingMsg.data);
-            alert("The combination is made. Please make a guess!");
+            //alert("The combination is made. Please make a guess!");
+            
             gs.incrWrongGuess();
             board.enableButtonsByLine("line"+gs.getWrongGuesses());
             board.activateLineButtons("line"+gs.getWrongGuesses());
@@ -271,12 +300,8 @@ function PlayBoard(gs) {
             document.getElementById("readyButton").addEventListener("click", function firstGuessReady(){
                 board.setGuessByReady();
                 board.disableReadyButton();
-                alert("Please wait till your guess is checked");
+                //alert("Please wait till your guess is checked");
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
-                
-                // let outgoingMsg = Messages.O_CHECK_RESULT;
-                // outgoingMsg.data = gs.getGuessedCombi();
-                // socket.send(JSON.stringify(outgoingMsg));
 
                 gs.updateGame();
                 document.getElementById("readyButton").removeEventListener("click", firstGuessReady, false);
@@ -287,14 +312,14 @@ function PlayBoard(gs) {
             gs.setGuessedCombi(incomingMsg.data);
             gs.incrWrongGuess();
             board.setGuessedCombiPlayerA();
-            alert("The guess is made. Please check!");
+            //alert("The guess is made. Please check!");
             board.enableButtonsByLine("check"+gs.getWrongGuesses());
-            board.activeCheckButtons("check"+gs.getWrongGuesses());
+            board.activateCheckButtons("check"+gs.getWrongGuesses());
 
             document.getElementById("readyButton").addEventListener("click", function checkReady(){
                 board.setCheckByReady();
                 board.disableReadyButton();
-                alert("Please wait till another guess is made");
+                //alert("Please wait till another guess is made");
                 board.disableButtonsByLine("check"+gs.getWrongGuesses());
             
                 gs.updateGame();
@@ -303,60 +328,50 @@ function PlayBoard(gs) {
         }
         
         if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "B") {
-            gs.setCheckedCombi(incomingMsg.data);
-            board.setCheckedCombiPlayerB();
-            alert("The guess is made. Please check!");
-            gs.incrWrongGuess();
-            board.enableButtonsByLine("check"+gs.getWrongGuesses());
-        //     board.activeGuessedButtons("check"+gs.getWrongGuesses());
+            gs.setCheckCombi(incomingMsg.data);
+            board.setCheckCombiPlayerB();
+            // alert("The guess is made. Please check!");
+            if(gs.incrWrongGuess() < Setup.MAX_ALLOWED_GUESSES) {
+                gs.incrWrongGuess();
+                board.enableButtonsByLine("line"+gs.getWrongGuesses());
+                board.activateLineButtons("line"+gs.getWrongGuesses());
 
-        //     document.getElementById("readyButton").addEventListener("click", function(){
-        //         board.setGuessByReady();
-        //         board.disableReadyButton();
-        //         alert("Please wait till your guess is checked");
-        //         board.disableButtonsByLine("line"+gs.getWrongGuesses());
-                
-        //         // let outgoingMsg = Messages.O_CHECK_RESULT;
-        //         // outgoingMsg.data = gs.getGuessedCombi();
-        //         // socket.send(JSON.stringify(outgoingMsg));
-
-        //     /*~*/
-            //gs.updateGame();
-        //     });
+                document.getElementById("readyButton").addEventListener("click", function guessReady(){
+                    board.setGuessByReady();
+                    board.disableReadyButton();
+                    //alert("Please wait till your guess is checked");
+                    board.disableButtonsByLine("line"+gs.getWrongGuesses());
+                    
+                    gs.updateGame();
+                    document.getElementById("readyButton").removeEventListener("click", guessReady, false);
+                });
+            }  
         }
 
+        if(incomingMsg.type == Messages.T_GAME_WON_BY && gs.getPlayerType() == "B") {
+            if(incomingMsg.data == "B") {
+                alertString = "Congratulation! You won!";
+            }
+            else {
+                alertString = "Game over. You lost..."
+            }
+            alertString += "\n <a href='/'>Play again!</a>";
+            alert(alertString);
+        }
 
-    /*oude A*/
-        // if(incomingMsg.type == Messages.T_CHECK_RESULT && gs.getPlayerType == "A") {
-        //     gs.setGuessedCombi(incomingMsg.data);
-        //     board.setGuessedCombiPlayerA();
-        //     alert("The guess is made. Please check!");
-        //     gs.incrWrongGuess();
-        //     board.enableButtonsByLine("check"+gs.getWrongGuesses());
-        //     board.activeCheckButtons("check"+gs.getWrongGuesses());
-
-        //     document.getElementById("readyButton").addEventListener("click", function(){
-        //         board.setCheckByReady();
-        //         board.disableReadyButton();
-        //         alert("Please wait till another guess is made");
-        //         board.disableButtonsByLine("check"+gs.getWrongGuesses());
-                
-        //         let outgoingMsg = Messages.O_MAKE_A_GUESS;
-        //         outgoingMsg.data = gs.getCheckCombi();
-        //         socket.send(JSON.stringify(outgoingMsg));
-        //     });
-        // }
     };
+
+    
 
     socket.onopen = function(){
         socket.send("{}");
     };
 
-    // socket.onclose = function(){
-    //     if(gs.whoWon()==null){
-    //        //sb.setStatus(Status["aborted"]);
-    //     }
-    // };
+    socket.onclose = function(){
+        if(gs.whoWon()==null){
+           alert("The other player left the game");
+        }
+    };
 
     socket.onerror = function(){  
     };
