@@ -112,28 +112,24 @@ function PlayBoard(gs) {
         document.getElementById("readyButton").disabled = true;
     };
 
-/* checkt of de 4 vakjes van combination al ingevuld zijn 
-maar weet nog steeds niet waar ik dat zou moeten aanroepen en wanneer */
-/* het staat nu in changecolor... maar zou anders moeten kunnen i guess */
+    this.combinationMade = function(lineID) {
+        var combiButtons = this.getButtonsByLine(lineID);
+        var counter = 0;
+        for(var i=0; i<combiButtons.length; i++) {
+            if(combiButtons[i].value != "-1" && combiButtons[i].value != "0")
+                counter++;
+        }
+        return counter === 4;
+    };
 
-    // this.combinationMade = function() {
-    //     var combiButtons = this.getButtonsByLine("combination");
-    //     var counter = 0;
-    //     for(var i=0; i<combiButtons.length; i++) {
-    //         if(combiButtons[i].value != "-1" && combiButtons[i].value != "0")
-    //             counter++;
-    //     }
-    //     return counter === 4;
-    // };
-
-/* probeerde te checken of alles ingevuld was en dan ready enable
-dit staat nu allemaal soort van in changecolor....... */
-
-    // this.checkReady = function() {
-    //     if(this.combinationMade()) {
-    //         this.enableReadyButton();
-    //     }
-    // };
+    this.checkReady = function(lineID) {
+        if(this.combinationMade(lineID)) {
+            this.enableReadyButton();
+        }
+        else {
+            this.disableReadyButton();
+        }
+    };
 
     
     this.activateLineButtons = function(lineID) {
@@ -148,23 +144,8 @@ dit staat nu allemaal soort van in changecolor....... */
                 clickedButton.innerHTML = colors[++clickedButton.value];
             });
 
-    //deze eventListener maakt ready button enabled als 4 plekken is ingevuld
-    //en anders disable weer (als je na cycle weer op O komt)
-    //niet netjes hier,maar kon geen andere manier vinden
-    // bol.onclick = function(event) {
-    //     checkReady();
-    // }
-
-            bol.addEventListener("click", function checkReady() {
-                var counter = 0;
-                for(var i=0; i<buttons.length; i++) {
-                    if(buttons[i].value != "-1" && buttons[i].value != "0")
-                        counter++;
-                }
-                if(counter === 4)
-                    document.getElementById("readyButton").disabled = false;
-                else
-                    document.getElementById("readyButton").disabled = true;
+            bol.addEventListener("click", function checkReadyByClick() {
+                that.checkReady(lineID);
             });
         });
     };
@@ -182,16 +163,8 @@ dit staat nu allemaal soort van in changecolor....... */
                 clickedButton.innerHTML = colors[++clickedButton.value]
             });
 
-            bol.addEventListener("click", function checkReady() {
-                var counter = 0;
-                for(var i=0; i<buttons.length; i++) {
-                    if(buttons[i].value != "-1" && buttons[i].value != "0")
-                        counter++;
-                }
-                if(counter === 4)
-                    document.getElementById("readyButton").disabled = false;
-                else
-                    document.getElementById("readyButton").disabled = true;
+            bol.addEventListener("click", function checkReadyByClick() {
+                that.checkReady();
             });
         });        
     };
@@ -203,10 +176,6 @@ dit staat nu allemaal soort van in changecolor....... */
             madeCombi.push(combiButtons[i].innerHTML);
         }
         gs.setTargetCombi(madeCombi);
-        // }
-        // else {
-        //     alert("You did not fill all the spaces of the combination")
-        // } 
     };
 
     this.hideTargetWord = function() {
@@ -214,7 +183,7 @@ dit staat nu allemaal soort van in changecolor....... */
         for(var i=0; i<combiButtons.length; i++) {
             combiButtons[i].innerHTML = "?";
         }
-    }
+    };
 
     this.setGuessByReady = function() {
         var madeGuess = [];
@@ -231,7 +200,7 @@ dit staat nu allemaal soort van in changecolor....... */
         for(var i=0; i<guessButtons.length; i++) {
             guessButtons[i].innerHTML = guessCombi[i];
         }
-    }
+    };
 
     this.setCheckByReady = function() {
         var madeCheck = [];
@@ -248,10 +217,8 @@ dit staat nu allemaal soort van in changecolor....... */
         for(var i=0; i<checkButtons.length; i++) {
             checkButtons[i].innerHTML = checkCombi[i];
         }
-    }    
-
+    };   
 }
-
 
 
 (function setup() {
