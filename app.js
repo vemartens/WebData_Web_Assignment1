@@ -86,7 +86,6 @@ wss.on("connection", function connection(ws) {
                 gameObj.setStatus("GUESS CHECKED");
             }
             
-            console.log("er is een winnaar")
             if(oMsg.type == messages.T_GAME_WON_BY) {
                 console.log("in if statement");
                 gameObj.playerB.send(message);

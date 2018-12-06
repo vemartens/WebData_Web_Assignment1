@@ -61,7 +61,7 @@ function GameState(socket) {
             }
         }
         return counter == 4;
-    }
+    };
     
     this.whoWon = function(){
         if(this.wrongGuesses == Setup.MAX_ALLOWED_GUESSES && !this.checkIsAllRed()){
