@@ -70,6 +70,7 @@ wss.on("connection", function connection(ws) {
         let isPlayerA = (gameObj.playerA == conn) ? true : false;
 
         if (isPlayerA && gameObj.getCombi().length==0) {
+
             if(oMsg.type == messages.T_TARGET_COMBI) {
                 gameObj.setCombi(oMsg.data);
 
@@ -85,8 +86,7 @@ wss.on("connection", function connection(ws) {
         //     //     gameObj.setStatus("GUESS CHECKED");
         //     // }
 
-        /*~*/
-            if(oMsg.type == message.T_GUESS_OR_CHECK) {
+            if(oMsg.type == messages.T_GUESS_OR_CHECK) {
                 gameObj.playerB.send(message);
                 gameObj.setStatus("GUESS CHECKED");
             }
@@ -96,7 +96,7 @@ wss.on("connection", function connection(ws) {
         //         gameStatus.gamesCompleted++;
         //     }
         }
-        else {                          /*~*/
+        else {
             if(oMsg.type == messages.T_GUESS_OR_CHECK){ //T_MAKE_A_GUESS) {
                 gameObj.playerA.send(message);
                 gameObj.setStatus("COMBI GUESSED");
