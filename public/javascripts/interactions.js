@@ -267,13 +267,13 @@ function PlayBoard(gs) {
             
             if (gs.getPlayerType() == "A") {
                 board.enableButtonsByLine("combination");
-                //alert("You're the codemaker. Please make a combination");
+                alert("You're the codemaker. Please make a combination");
                 board.activateLineButtons("combination");
                 
                 document.getElementById("readyButton").addEventListener("click", function combiReady(){
                     board.setTargetCombiByReady();
                     board.disableReadyButton();
-                    //alert("Please wait for the first guess to check");
+                    alert("Please wait for the first guess to check");
                     board.disableButtonsByLine("combination");
                     
                     let outgoingMsg = Messages.O_TARGET_COMBI;
@@ -291,7 +291,7 @@ function PlayBoard(gs) {
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
             board.hideTargetWord();
             gs.setTargetCombi(incomingMsg.data);
-            //alert("The combination is made. Please make a guess!");
+            alert("The combination is made. Please make a guess!");
             
             gs.incrWrongGuess();
             board.enableButtonsByLine("line"+gs.getWrongGuesses());
@@ -300,7 +300,7 @@ function PlayBoard(gs) {
             document.getElementById("readyButton").addEventListener("click", function firstGuessReady(){
                 board.setGuessByReady();
                 board.disableReadyButton();
-                //alert("Please wait till your guess is checked");
+                alert("Please wait till your guess is checked");
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
 
                 gs.updateGame();
@@ -312,14 +312,14 @@ function PlayBoard(gs) {
             gs.setGuessedCombi(incomingMsg.data);
             gs.incrWrongGuess();
             board.setGuessedCombiPlayerA();
-            //alert("The guess is made. Please check!");
+            alert("The guess is made. Please check!");
             board.enableButtonsByLine("check"+gs.getWrongGuesses());
             board.activateCheckButtons("check"+gs.getWrongGuesses());
 
             document.getElementById("readyButton").addEventListener("click", function checkReady(){
                 board.setCheckByReady();
                 board.disableReadyButton();
-                //alert("Please wait till another guess is made");
+                alert("Please wait till another guess is made");
                 board.disableButtonsByLine("check"+gs.getWrongGuesses());
             
                 gs.updateGame();
@@ -330,7 +330,7 @@ function PlayBoard(gs) {
         if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "B") {
             gs.setCheckCombi(incomingMsg.data);
             board.setCheckCombiPlayerB();
-            // alert("The guess is made. Please check!");
+            alert("The guess is made. Please check!");
             if(gs.incrWrongGuess() < Setup.MAX_ALLOWED_GUESSES) {
                 gs.incrWrongGuess();
                 board.enableButtonsByLine("line"+gs.getWrongGuesses());
@@ -339,7 +339,7 @@ function PlayBoard(gs) {
                 document.getElementById("readyButton").addEventListener("click", function guessReady(){
                     board.setGuessByReady();
                     board.disableReadyButton();
-                    //alert("Please wait till your guess is checked");
+                    alert("Please wait till your guess is checked");
                     board.disableButtonsByLine("line"+gs.getWrongGuesses());
                     
                     gs.updateGame();
@@ -357,6 +357,8 @@ function PlayBoard(gs) {
             }
             alertString += "\n <a href='/'>Play again!</a>";
             alert(alertString);
+
+            socket.close();
         }
 
     };
