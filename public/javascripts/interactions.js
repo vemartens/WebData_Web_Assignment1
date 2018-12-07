@@ -102,7 +102,7 @@ function GameState(socket) {
             else {
                 alertString = "Game over. You lost..."
             }
-            alertString += "\n <a href='/'>Play again!</a>";
+            alertString += "\n click on Replay to start a new game!";
             alert(alertString);
 
             //socket.close();
@@ -401,7 +401,7 @@ function PlayBoard(gs) {
             else {
                 alertString = "Game over. You lost..."
             }
-            alertString += "\n <a href='/'>Play again!</a>";
+            alertString += "\nClick on Replay to start a new game!";
             alert(alertString);
 
             socket.close();
@@ -415,7 +415,7 @@ function PlayBoard(gs) {
 
     socket.onclose = function(){
         if(gs.whoWon()==null){
-           alert("The other player left the game");
+           alert("The other player left the game.\n Click on Replay to start a new game");
         }
     };
 

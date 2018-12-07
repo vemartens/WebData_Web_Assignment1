@@ -4,13 +4,13 @@ var game = function(gameID) {
     this.playerB = null;
     this.id = gameID;
     this.combiToGuess = [];   //first player to join the game will set the combination
-    this.gameState = "0 JOINT"; //different states are defined below
+    this.gameState = "0 JOINED"; //different states are defined below
 }
 
 game.prototype.transitionStates = {};
-game.prototype.transitionStates["0 JOINT"] = 0;
-game.prototype.transitionStates["1 JOINT"] = 1;
-game.prototype.transitionStates["2 JOINT"] = 2;
+game.prototype.transitionStates["0 JOINED"] = 0;
+game.prototype.transitionStates["1 JOINED"] = 1;
+game.prototype.transitionStates["2 JOINED"] = 2;
 game.prototype.transitionStates["COMBI GUESSED"] = 3;
 game.prototype.transitionStates["GUESS CHECKED"] = 4;
 game.prototype.transitionStates["A"] = 5; //A won
@@ -18,9 +18,9 @@ game.prototype.transitionStates["B"] = 6; //B won
 game.prototype.transitionStates["ABORTED"] = 7;
 
 game.prototype.transitionMatrix = [
-    [0, 1, 0, 0, 0, 0, 0, 0],   //0 JOINT
-    [1, 0, 1, 0, 0, 0, 0, 0],   //1 JOINT
-    [0, 0, 0, 1, 0, 0, 0, 1],   //2 JOINT
+    [0, 1, 0, 0, 0, 0, 0, 0],   //0 JOINED
+    [1, 0, 1, 0, 0, 0, 0, 0],   //1 JOINED
+    [0, 0, 0, 1, 0, 0, 0, 1],   //2 JOINED
     [0, 0, 0, 0, 1, 0, 0, 1],   //COMBI GUESSED
     [0, 0, 0, 1, 0, 1, 1, 1],   //GUESS CHECKED
     [0, 0, 0, 0, 0, 0, 0, 0],   //A WON
@@ -73,8 +73,8 @@ game.prototype.setCombi = function (combi) {
     console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
 
     //two possible options for the current game state:
-    //1 JOINT, 2 JOINT
-    if (this.gameState != "1 JOINT" && this.gameState != "2 JOINT") {
+    //1 JOINED, 2 JOINED
+    if (this.gameState != "1 JOINED" && this.gameState != "2 JOINED") {
         return new Error("Trying to set word, but game status is %s", this.gameState);
     }
     this.combiToGuess = combi;
@@ -85,19 +85,19 @@ game.prototype.getCombi = function(){
 };
 
 game.prototype.hasTwoConnectedPlayers = function () {
-    return (this.gameState == "2 JOINT");
+    return (this.gameState == "2 JOINED");
 };
 
 game.prototype.addPlayer = function (p) {
     console.assert(p instanceof Object, "%s: Expecting an object (WebSocket), got a %s", arguments.callee.name, typeof p);
 
-    if (this.gameState != "0 JOINT" && this.gameState != "1 JOINT") {
+    if (this.gameState != "0 JOINED" && this.gameState != "1 JOINED") {
         return new Error("Invalid call to addPlayer, current state is %s", this.gameState);
     }
 
-    var error = this.setStatus("1 JOINT");
+    var error = this.setStatus("1 JOINED");
     if(error instanceof Error){
-        this.setStatus("2 JOINT");
+        this.setStatus("2 JOINED");
     }
 
     if (this.playerA == null) {

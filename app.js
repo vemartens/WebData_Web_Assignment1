@@ -14,11 +14,12 @@ var app = express();
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-// app.get("/", (req, res) => {
-//     res.render("splash.ejs")}
-// );
+app.get("/", (req, res) => {
+    res.render("splash.ejs",{gamesInitialized: gameStatus.gamesInitialized, 
+        gamesCompleted: gameStatus.gamesCompleted});
+});
 
-app.get("/", indexRouter);
+//app.get("/", indexRouter);
 app.get("/play", indexRouter);
 
 var server = http.createServer(app);
@@ -33,15 +34,15 @@ setInterval(function() {
             let gameObj = websockets[i];
             
             //if the gameObj has a final status, the game is complete/aborted
-            if(gameObj.gamestate=="A" || gameObj.gamestate=="B" || gameObj.gamestate=="ABORTED"){
+            if(gameObj.gameState=="A" || gameObj.gameState=="B" || gameObj.gameState=="ABORTED"){
                 console.log("\tDeleting element "+i);
                 delete websockets[i];
             }
         }
     }
 }, 50000);
-
-var currentGame = new Game(gameStatus.gamesInitialized++); //gameID is gelijk aan hoeveelste game het is
+//gameStatus.gamesInitialized++
+var currentGame = new Game(); //gameID is gelijk aan hoeveelste game het is
 var connectionID = 0;
 
 wss.on("connection", function connection(ws) {
@@ -67,6 +68,7 @@ wss.on("connection", function connection(ws) {
         let oMsg = JSON.parse(message);
 
         let gameObj = websockets[conn.id];
+        console.log(gameObj.gameState);
         let isPlayerA = (gameObj.playerA == conn) ? true : false;
 
         if (isPlayerA && gameObj.getCombi().length==0) {
@@ -101,18 +103,18 @@ wss.on("connection", function connection(ws) {
     });
 
     conn.on("close", function(code) {
-        
+        console.log("One of my clients is disconnecting with code =", code)
         if(code == "1001") {
             let gameObj = websockets[conn.id];
 
-            if (gameObj.isValidTransition(gameObj.gamestate, "ABORTED")){
+            if (gameObj.isValidTransition(gameObj.gameState, "ABORTED")){
                 gameObj.setStatus("ABORTED");
-                gamesStatus.gamesAborted++;                                                                    
+                gameStatus.gamesAborted++;                                                                    
             } 
 
             try{
                 gameObj.playerA.close();
-                gameObj.playerB = null;
+                
             }
             catch(e){
                 console.log("Player A closing: " + e);            
@@ -120,11 +122,12 @@ wss.on("connection", function connection(ws) {
 
             try{
                 gameObj.playerB.close();
-                gameObj.playerA = null;
             }
             catch(e){
                 console.log("Player B closing: " + e);
-            }           
+            }              
+            gameObj.playerA = null;
+            gameObj.playerB = null; 
         }                                           
     });
 });

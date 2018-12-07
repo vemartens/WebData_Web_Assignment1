@@ -11,35 +11,31 @@
                 <h2>Code-breaking game for two players</h2>
             </section>
 
-            <!-- <section id="centre">
-                <form action="">
-                    <div id="Name" class=""> 
-                        <label for="Name">Name:</label>
-                        <input type="text" id="Name">
-                    </div>
-                   
-                    <div id="task" class="">
-                        <label for="Want">I want to...</label>
-                        <input type="radio" id="make" checked>
-                        <label for="task" >make</label>
-                        <input type="radio" id="guess">
-                        <label for="task">guess</label>
-                        ... the combination
-                    </div>
-
-
-                </form>
-            </section> -->
+            <!-- eventueel naam invullen -->
 
             <section id="play">
                 <form action="/play" method="get">
                     <button type="submit">Play</button>
                 </form>
             </section>
-            
+
             <!-- wordt missch aangepast naar onmouseover/onmouseout -->
             <section id="instruction">
                 <button onclick="instructionButton()">Instructions</button>
+            </section>
+
+            <section>
+                <h3><%= gamesInitialized %> 
+                    <%if (gamesInitialized != 1) { %>
+                        games
+                    <% } else { %>
+                        game
+                    <% } %>
+                    started, 
+                    <%= gamesCompleted %> 
+                    completed
+
+                </h3>
             </section>
 
             <script src="javascripts/instruction.js"></script>
