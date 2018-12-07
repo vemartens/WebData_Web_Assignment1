@@ -20,7 +20,7 @@ function GameState(socket) {
 
     this.getTargetCombi = function() {
         return this.targetCombi;
-    }
+    };
 
     this.setTargetCombi = function (combi) {
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
@@ -29,21 +29,21 @@ function GameState(socket) {
 
     this.getGuessedCombi = function() {
         return this.guessedCombi;
-    }
+    };
 
     this.setGuessedCombi = function(combi) {
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
         this.guessedCombi = combi;
-    }
+    };
 
     this.getCheckCombi = function() {
         return this.checkCombi;
-    }
+    };
 
     this.setCheckCombi = function(combi) {
         console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
         this.checkCombi = combi;
-    }
+    };
 
     this.incrWrongGuess = function(){
         this.wrongGuesses++;
@@ -51,7 +51,7 @@ function GameState(socket) {
 
     this.getWrongGuesses = function() {
         return this.wrongGuesses;
-    }
+    };
 
     this.checkIsAllRed = function() {
         var counter = 0;
@@ -87,6 +87,14 @@ function GameState(socket) {
         let winner = this.whoWon();
 
         if (winner != null){
+
+            document.getElementById("playerA").disabled = true;
+            document.getElementById("playerB").disabled = true;
+
+            let finalMsg = Messages.O_GAME_WON_BY;
+            finalMsg.data = winner;
+            socket.send(JSON.stringify(finalMsg));
+
             let alertString;
             if( winner == this.playerType){
                 alertString = "Congratulation! You won!";
@@ -96,10 +104,6 @@ function GameState(socket) {
             }
             alertString += "\n <a href='/'>Play again!</a>";
             alert(alertString);
-
-            let finalMsg = Messages.O_GAME_WON_BY;
-            finalMsg.data = winner;
-            socket.send(JSON.stringify(finalMsg));
 
             //socket.close();
         }
@@ -159,7 +163,6 @@ function PlayBoard(gs) {
         }
     };
 
-    
     this.activateLineButtons = function(lineID) {
         var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
         var buttons = this.getButtonsByLine(lineID);
@@ -190,9 +193,9 @@ function PlayBoard(gs) {
                 clickedButton.innerHTML = colors[++clickedButton.value]
             });
 
-            bol.addEventListener("click", function checkReadyByClick() {
-                that.checkReady(lineID);
-            });
+            // bol.addEventListener("click", function checkReadyByClick() {
+            //     that.checkReady(lineID);
+            // });
         });        
     };
 
@@ -244,7 +247,33 @@ function PlayBoard(gs) {
         for(var i=0; i<checkButtons.length; i++) {
             checkButtons[i].innerHTML = checkCombi[i];
         }
-    };   
+    };
+
+    this.switchPlayerButtons = function(playerID) {
+        var playerAButton = document.getElementById("playerA");
+        var playerBButton = document.getElementById("playerB");
+
+        if(playerID == "A") {
+            if(playerAButton.disabled) {
+                playerAButton.disabled = false;
+                playerBButton.disabled = true;
+            }
+            else {
+                playerAButton.disabled = true;
+                playerBButton.disabled = false;
+            }
+        }
+        else {
+            if(playerBButton.disabled) {
+                playerAButton.disabled = true;
+                playerBButton.disabled = false;
+            }
+            else {
+                playerAButton.disabled = false;
+                playerBButton.disabled = true;
+            }
+        }
+    };
 }
 
 
@@ -266,6 +295,7 @@ function PlayBoard(gs) {
             gs.setPlayerType(incomingMsg.data); 
             
             if (gs.getPlayerType() == "A") {
+                board.switchPlayerButtons(gs.getPlayerType());
                 board.enableButtonsByLine("combination");
                 alert("You're the codemaker. Please make a combination");
                 board.activateLineButtons("combination");
@@ -275,6 +305,7 @@ function PlayBoard(gs) {
                     board.disableReadyButton();
                     alert("Please wait for the first guess to check");
                     board.disableButtonsByLine("combination");
+                    board.switchPlayerButtons(gs.getPlayerType());
                     
                     let outgoingMsg = Messages.O_TARGET_COMBI;
                     outgoingMsg.data = gs.getTargetCombi();
@@ -284,11 +315,13 @@ function PlayBoard(gs) {
                 });
             }
             else{
+                board.switchPlayerButtons("A");
                 alert("You're the codebreaker. Please wait for a combination to break")
             }
         }
 
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
+            board.switchPlayerButtons(gs.getPlayerType());
             board.hideTargetWord();
             gs.setTargetCombi(incomingMsg.data);
             alert("The combination is made. Please make a guess!");
@@ -302,6 +335,7 @@ function PlayBoard(gs) {
                 board.disableReadyButton();
                 alert("Please wait till your guess is checked");
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
+                board.switchPlayerButtons(gs.getPlayerType());
 
                 gs.updateGame();
                 document.getElementById("readyButton").removeEventListener("click", firstGuessReady, false);
@@ -309,18 +343,23 @@ function PlayBoard(gs) {
         }
 
         if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "A") {
+            board.switchPlayerButtons(gs.getPlayerType());
             gs.setGuessedCombi(incomingMsg.data);
             gs.incrWrongGuess();
             board.setGuessedCombiPlayerA();
             alert("The guess is made. Please check!");
             board.enableButtonsByLine("check"+gs.getWrongGuesses());
             board.activateCheckButtons("check"+gs.getWrongGuesses());
+            board.enableReadyButton();
 
             document.getElementById("readyButton").addEventListener("click", function checkReady(){
                 board.setCheckByReady();
                 board.disableReadyButton();
-                alert("Please wait till another guess is made");
+                if(!gs.checkIsAllRed()) {
+                    alert("Please wait till another guess is made");
+                }
                 board.disableButtonsByLine("check"+gs.getWrongGuesses());
+                board.switchPlayerButtons(gs.getPlayerType());
             
                 gs.updateGame();
                 document.getElementById("readyButton").removeEventListener("click", checkReady, false);
@@ -328,10 +367,13 @@ function PlayBoard(gs) {
         }
         
         if(incomingMsg.type == Messages.T_GUESS_OR_CHECK && gs.getPlayerType() == "B") {
+            board.switchPlayerButtons(gs.getPlayerType());
             gs.setCheckCombi(incomingMsg.data);
             board.setCheckCombiPlayerB();
-            alert("The guess is made. Please check!");
-            if(gs.incrWrongGuess() < Setup.MAX_ALLOWED_GUESSES) {
+            if(!gs.checkIsAllRed()) {
+                alert("You guess is checked. Please make another guess!");
+            }
+            if(gs.getWrongGuesses() < Setup.MAX_ALLOWED_GUESSES) {
                 gs.incrWrongGuess();
                 board.enableButtonsByLine("line"+gs.getWrongGuesses());
                 board.activateLineButtons("line"+gs.getWrongGuesses());
@@ -341,6 +383,7 @@ function PlayBoard(gs) {
                     board.disableReadyButton();
                     alert("Please wait till your guess is checked");
                     board.disableButtonsByLine("line"+gs.getWrongGuesses());
+                    board.switchPlayerButtons(gs.getPlayerType());
                     
                     gs.updateGame();
                     document.getElementById("readyButton").removeEventListener("click", guessReady, false);
@@ -349,6 +392,9 @@ function PlayBoard(gs) {
         }
 
         if(incomingMsg.type == Messages.T_GAME_WON_BY && gs.getPlayerType() == "B") {
+            document.getElementById("playerA").disabled = true;
+            document.getElementById("playerB").disabled = true;
+
             if(incomingMsg.data == "B") {
                 alertString = "Congratulation! You won!";
             }
@@ -362,9 +408,7 @@ function PlayBoard(gs) {
         }
 
     };
-
     
-
     socket.onopen = function(){
         socket.send("{}");
     };
