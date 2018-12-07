@@ -16,7 +16,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => {
     res.render("splash.ejs",{gamesInitialized: gameStatus.gamesInitialized, 
-        gamesCompleted: gameStatus.gamesCompleted});
+        gamesCompleted: gameStatus.gamesCompleted, brokenCodes: gameStatus.brokenCodes});
 });
 
 //app.get("/", indexRouter);
@@ -92,6 +92,9 @@ wss.on("connection", function connection(ws) {
                 gameObj.playerB.send(message);
                 gameObj.setStatus(oMsg.data);
                 gameStatus.gamesCompleted++;
+                if(oMsg.data = "B") {
+                    gameStatus.brokenCodes++;
+                }
             }
         }
         else {
@@ -103,7 +106,6 @@ wss.on("connection", function connection(ws) {
     });
 
     conn.on("close", function(code) {
-        console.log("One of my clients is disconnecting with code =", code)
         if(code == "1001") {
             let gameObj = websockets[conn.id];
 

@@ -118,7 +118,7 @@ function PlayBoard(gs) {
     
     this.getButtonsByLine = function(lineID) {
         var rightLine = document.getElementById(lineID);
-        buttons = rightLine.getElementsByTagName("button");
+        var buttons = rightLine.getElementsByTagName("button");
         return buttons;
     };
 
@@ -212,6 +212,13 @@ function PlayBoard(gs) {
         var combiButtons = this.getButtonsByLine("combination");
         for(var i=0; i<combiButtons.length; i++) {
             combiButtons[i].innerHTML = "?";
+        }
+    };
+
+    this.showCombi = function(combi) {
+        var combiButtons = this.getButtonsByLine("combination");
+        for(var i=0; i<combiButtons.length; i++) {
+            combiButtons[i].innerHTML = combi[i];
         }
     };
 
@@ -373,7 +380,7 @@ function PlayBoard(gs) {
             if(!gs.checkIsAllRed()) {
                 alert("You guess is checked. Please make another guess!");
             }
-            if(gs.getWrongGuesses() < Setup.MAX_ALLOWED_GUESSES) {
+            if(gs.getWrongGuesses() < Setup.MAX_ALLOWED_GUESSES && gs.whoWon()==null) {
                 gs.incrWrongGuess();
                 board.enableButtonsByLine("line"+gs.getWrongGuesses());
                 board.activateLineButtons("line"+gs.getWrongGuesses());
@@ -403,6 +410,8 @@ function PlayBoard(gs) {
             }
             alertString += "\nClick on Replay to start a new game!";
             alert(alertString);
+
+            board.showCombi(gs.getTargetCombi());
 
             socket.close();
         }

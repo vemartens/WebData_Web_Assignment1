@@ -33,8 +33,14 @@
                     <% } %>
                     started, 
                     <%= gamesCompleted %> 
-                    completed
-
+                    completed,
+                    <%= brokenCodes %>
+                    <%if (brokenCodes != 1) { %>
+                        codes are
+                    <% } else { %>
+                        code is
+                    <% } %>
+                    broken
                 </h3>
             </section>
 
