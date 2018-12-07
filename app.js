@@ -54,12 +54,18 @@ wss.on("connection", function connection(ws) {
 
     conn.send((playerType == "A") ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
+
+    if(playerType == "B") {
+        let msg = messages.O_PLAYER_JOINED;
+        currentGame.playerA.send(JSON.stringify(msg));
+    }
+
     if(playerType == "B" && currentGame.getCombi().length!=0){
         let msg = messages.O_TARGET_COMBI;
         msg.data = currentGame.getCombi();
         conn.send(JSON.stringify(msg));
     }
-    
+
     if (currentGame.hasTwoConnectedPlayers()) {
         currentGame = new Game(gameStatus.gamesInitialized++);
     }

@@ -36,15 +36,13 @@
     };
     exports.S_PLAYER_B = JSON.stringify(exports.O_PLAYER_B);
 
-
-    /* Server to client (player A): choose a target combination
-     */
-    exports.O_CHOOSE = { 
-        type: "CHOOSE-COMBI"
-    };
-    exports.S_CHOOSE = JSON.stringify(exports.O_CHOOSE);
-
     
+    exports.T_PLAYER_JOINED = "OTHER-PLAYER-JOINED";
+    exports.O_PLAYER_JOINED = {
+        type: exports.T_PLAYER_JOINED,
+        data: null
+    };
+
     /* Player A to server OR server to Player B: this is the target combination 
      */
     exports.T_TARGET_COMBI = "SET-TARGET-COMBI";
@@ -53,35 +51,6 @@
         data: null
     };
 
-
-    /* Player B to server OR server to Player A: guessed combination 
-     */
-    exports.T_MAKE_A_GUESS = "MAKE-A-GUESS";         
-    exports.O_MAKE_A_GUESS = {
-        type: exports.T_MAKE_A_GUESS,
-        data: null
-    };
-
-
-    /* Server to client (player A): check guessed combination
-     */
-    exports.O_CHECK = { 
-        type: "CHECK-GUESS"
-    };
-    exports.S_CHECK = JSON.stringify(exports.O_CHECK_GUESS);
-
-
-    /* Player A to server OR server to Player B: this is the check result 
-     */
-    exports.T_CHECK_RESULT = "SET-CHECK-RESULT";
-    exports.O_CHECK_RESULT = {                         
-        type: exports.T_CHECK_RESULT,
-        data: null
-    };
-
-
-    
-/*~*/
     exports.T_GUESS_OR_CHECK = "SET-GUESS-OR-CHECK";
     exports.O_GUESS_OR_CHECK = {
         type: exports.T_GUESS_OR_CHECK,

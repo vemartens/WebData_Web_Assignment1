@@ -327,6 +327,10 @@ function PlayBoard(gs) {
             }
         }
 
+        if(incomingMsg.type == Messages.T_PLAYER_JOINED && gs.getPlayerType() == "A") {
+            alert("The codebreaker joined the game");
+        };
+
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
             board.switchPlayerButtons(gs.getPlayerType());
             board.hideTargetWord();
