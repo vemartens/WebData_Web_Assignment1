@@ -87,9 +87,7 @@ wss.on("connection", function connection(ws) {
             }
             
             if(oMsg.type == messages.T_GAME_WON_BY) {
-                console.log("in if statement");
                 gameObj.playerB.send(message);
-                console.log("bericht verzonden");
                 gameObj.setStatus(oMsg.data);
                 gameStatus.gamesCompleted++;
             }
