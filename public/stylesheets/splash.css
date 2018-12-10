@@ -1,40 +1,53 @@
 @import "style.css";
 
+:root {
+    --toLeftFromCenter: -70px;
+}
+
 body {
-    /* position: relative;
-    left: 100px */
-    /* background-image: url("splashMastermindBackground.jpg"); */
-    background-image: url("background_balls.jpg");
-    background-position: right;
-    background-color: #cccccc;
-    padding: 100px;
     display: table;
     /* margin: 50px; */
     margin: auto; 
+    padding: 60px;
+    background-image: url("background_balls.jpg");
+    background-position: right;
+    background-color: #cccccc;
     vertical-align: middle;
     text-align: center; 
     vertical-align: middle;
     color: rgba(255, 255, 255, 0.918);
 }
 h1 {
-    font-size: 300%;
+    font-size: 400%;
+    position: relative;
+    left: var(--toLeftFromCenter);
 }
 
 h2 {
     position: relative;
-    bottom: 7px;
+    bottom: 30px;
+    left: var(--toLeftFromCenter);
 }
 
 .playButton {
-    /* position: relative;   */
-    /* bottom: -100px; */
-    size: 200%;
+    font-size: 200%;
+    width: 200px;   /* normaal is het breedte 10*/
+    height: 70px;
+    position: relative;
+    bottom: -30px;
+    left: var(--toLeftFromCenter);
 }
 
 #instruction{
     position: relative;  
-    bottom: -100px;
+    bottom: -120px;
     left: 200px; 
+}
+
+h3 {
+    position: relative;
+    bottom: -20px;
+    left: var(--toLeftFromCenter);
 }
 
 #bolpic{
@@ -99,11 +112,11 @@ h2::after {
 }
 
 @keyframes movingSmall {
-    0% {bottom: -250px}
-    25% {bottom: -200px}
-    50% {bottom: -250px}
-    75% {bottom: -200px}
-    100% {bottom: -250px}
+    0% {bottom: -240px}
+    25% {bottom: -190px}
+    50% {bottom: -240px}
+    75% {bottom: -190px}
+    100% {bottom: -240px}
 }
 
 
