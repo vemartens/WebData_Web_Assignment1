@@ -10,7 +10,7 @@ button {
     border:1px solid darkgray;
 }
 
-button:hover {
+button:hover:enabled {
     color:white;
     background:darkgray;
 }
@@ -18,4 +18,14 @@ button:hover {
 button:active {
     border:1px dashed;
     border-color: black;
+}
+
+#checkboard {
+    vertical-align: middle;
+    bottom: 20px;
+}
+
+#players button:enabled {
+    background-color: rgb(240, 112, 112);
+    border-color: darkred;
 }
