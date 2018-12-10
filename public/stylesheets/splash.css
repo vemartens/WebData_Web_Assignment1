@@ -4,8 +4,8 @@ body {
     /* position: relative;
     left: 100px */
     /* background-image: url("splashMastermindBackground.jpg"); */
-    background-image: url("MMP-Background-v2.jpg");
-
+    background-image: url("background_balls.jpg");
+    background-position: right;
     background-color: #cccccc;
 }
 h1 {
