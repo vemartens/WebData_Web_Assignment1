@@ -29,3 +29,8 @@ button:active {
     background-color: rgb(240, 112, 112);
     border-color: darkred;
 }
+
+#board button {
+    width: 30px;
+    height: 30px;
+}
