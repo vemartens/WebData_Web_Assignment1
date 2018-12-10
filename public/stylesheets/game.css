@@ -1,0 +1,21 @@
+@import "style.css";
+
+button{
+    background: white;
+    color: darkgray;
+    width: 100px;
+    padding:5px;
+    font-weight:bold;
+    text-align: center;
+    border:1px solid darkgray;
+}
+
+button:hover {
+    color:white;
+    background:darkgray;
+    }
+
+button:active {
+    border:1px dashed;
+    border-color: black;
+    }
