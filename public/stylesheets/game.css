@@ -1,8 +1,8 @@
 @import "style.css";
 
-button{
+button {
     background: white;
-    color: darkgray;
+    color: black;
     width: 100px;
     padding:5px;
     font-weight:bold;
@@ -13,9 +13,9 @@ button{
 button:hover {
     color:white;
     background:darkgray;
-    }
+}
 
 button:active {
     border:1px dashed;
     border-color: black;
-    }
+}

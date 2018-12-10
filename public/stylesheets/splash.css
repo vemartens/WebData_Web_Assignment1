@@ -1,8 +1,31 @@
 @import "style.css";
 
-button{
+body {
+    /* position: relative;
+    left: 100px */
+    /* background-image: url("splashMastermindBackground.jpg"); */
+    background-image: url("MMP-Background-v2.jpg");
+
+    background-color: #cccccc;
+}
+h1 {
+    font-size: 300%;
+}
+
+h2 {
+    position: relative;
+    bottom: 7px;    
+}
+
+#instruction{
+    position: relative;  
+    bottom: 0px;
+    left: 0px;  
+}
+
+button {
     background: white;
-    color: darkgray;
+    color: black;
     width: 100px;
     padding:5px;
     font-weight:bold;
@@ -13,9 +36,18 @@ button{
 button:hover {
     color:white;
     background:darkgray;
-    }
+}
 
 button:active {
     border:1px dashed;
     border-color: black;
-    }
+}
+
+h2::before {
+    content : "• "
+}
+
+h2::after {
+    content : " •"
+}
+
