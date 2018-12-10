@@ -11,6 +11,7 @@ body {
     padding: 60px;
     background-image: url("background_balls.jpg");
     background-position: right;
+    /* width: auto; */
     background-color: #cccccc;
     vertical-align: middle;
     text-align: center; 
