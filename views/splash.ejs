@@ -7,7 +7,8 @@
     <body>
         <main>
             <section id="top">
-                <h1>Mastermind</h1>
+                <h1 class="mastermind">Mastermind</h1>
+                <!-- <h5 class="neon" data-text="U">MA<span class="flicker-slow">ST</span>E<span class="flicker-fast">R</span>MIND</h5> -->
                 <h2>Code-breaking game for two players</h2>
             </section>
 
@@ -15,7 +16,7 @@
 
             <section id="play">
                 <form action="/play" method="get">
-                    <button type="submit">Play</button>
+                    <button class="playButton" type="submit">Play</button>
                 </form>
             </section>
 
@@ -44,6 +45,14 @@
                 </h3>
             </section>
 
+            <picture id="bolpic">
+                <img src="bolletjeOranje.png" alt="bolletjeOranje" style="width:100px;">
+            </picture>
+
+            <picture id="bolpic2">
+                <img src="bolletjeBlauw.png" alt="bolletjeBlauw" style="width:100px;">
+            </picture>
+              
             <script src="javascripts/instruction.js"></script>
         </main>
     </body>

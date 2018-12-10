@@ -7,6 +7,14 @@ body {
     background-image: url("background_balls.jpg");
     background-position: right;
     background-color: #cccccc;
+    padding: 100px;
+    display: table;
+    /* margin: 50px; */
+    margin: auto; 
+    vertical-align: middle;
+    text-align: center; 
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.918);
 }
 h1 {
     font-size: 300%;
@@ -14,13 +22,43 @@ h1 {
 
 h2 {
     position: relative;
-    bottom: 7px;    
+    bottom: 7px;
+}
+
+.playButton {
+    /* position: relative;   */
+    /* bottom: -100px; */
+    size: 200%;
 }
 
 #instruction{
     position: relative;  
-    bottom: 0px;
-    left: 0px;  
+    bottom: -100px;
+    left: 200px; 
+}
+
+#bolpic{
+    position: relative;  
+    bottom: 300px;
+    left: 680px; 
+    /* width: 100px;
+    height: 100px; */
+    size: 50%;
+    animation-name: movingBig;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+#bolpic2{
+    position: relative;  
+    bottom: -250px;
+    left: 100px; 
+    /* width: 100px;
+    height: 100px; */
+    size: 50%;
+    animation-name: movingSmall;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;    
 }
 
 button {
@@ -51,3 +89,24 @@ h2::after {
     content : " •"
 }
 
+
+@keyframes movingBig {
+    0% {bottom: 300px}
+    25% {bottom: 200px}
+    50% {bottom: 300px}
+    75% {bottom: 200px}
+    100% {bottom: 300px}
+}
+
+@keyframes movingSmall {
+    0% {bottom: -250px}
+    25% {bottom: -200px}
+    50% {bottom: -250px}
+    75% {bottom: -200px}
+    100% {bottom: -250px}
+}
+
+
+  
+
+  
