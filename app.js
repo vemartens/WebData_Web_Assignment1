@@ -1,6 +1,8 @@
 var express = require("express");
 var http = require("http");
 var websocket = require("ws");
+var cookies = require("cookie-parser");
+var cookieSecret = "Thisisacookiestring";
 
 var indexRouter = require("./routes/index");
 var messages = require("./public/javascripts/messages");
@@ -13,14 +15,29 @@ var app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(cookies(cookieSecret));
 
 app.get("/", (req, res) => {
+    var gameStarted = req.cookies.gameStarted;
+    if (gameStarted == undefined){
+        gameStarted = 0;
+    }
     res.render("splash.ejs",{gamesInitialized: gameStatus.gamesInitialized, 
-        gamesCompleted: gameStatus.gamesCompleted, brokenCodes: gameStatus.brokenCodes});
+        gamesCompleted: gameStatus.gamesCompleted, brokenCodes: gameStatus.brokenCodes, gameStarted: gameStarted});
 });
 
 //app.get("/", indexRouter);
-app.get("/play", indexRouter);
+// app.get("/play", indexRouter);
+app.get("/play", function(req, res) {
+    res.sendFile("game.html", {root: "./public"});
+    var oldamount = req.cookies.gameStarted;
+    if(oldamount == undefined){
+        oldamount = 1;
+    }else{
+        oldamount++;
+    }
+    res.cookie("gameStarted", oldamount);
+  });
 
 var server = http.createServer(app);
 const wss = new websocket.Server({ server });

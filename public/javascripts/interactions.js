@@ -173,6 +173,7 @@ function PlayBoard(gs) {
                 if(clickedButton.value === "8")
                     clickedButton.value = "-1";
                 clickedButton.innerHTML = colors[++clickedButton.value];
+                // clickedButton.class
             });
 
             bol.addEventListener("click", function checkReadyByClick() {
