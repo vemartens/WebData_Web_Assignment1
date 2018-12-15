@@ -1,11 +1,11 @@
 @import "style.css";
 
 :root {
-    /* --toLeftFromCenter: 500px; */
+    --toLeftFromCenter: 500px;
 }
 
 body {
-    width: 100%;
+    /* width: 100%; */
     display: table;
     /* margin: 50px; */
     /* margin: 100 px; 
@@ -19,21 +19,32 @@ body {
     /* background-color: #cccccc; */
     vertical-align: middle;
     text-align:  center;
-    /* left: var(--toLeftFromCenter); */
     color: rgba(255, 255, 255, 0.918);
 
     /* overflow-y: scroll */
 }
+
+main *{
+    left: var(--toLeftFromCenter);
+    /* bottom: -100px; */
+}
+
 h1 {
     font-size: 400%;
     position: relative;
-    /* left: var(--toLeftFromCenter); */
 }
 
 h2 {
     position: relative;
     bottom: 30px;
-    /* left: var(--toLeftFromCenter); */
+}
+
+h2::before {
+    content : "• "
+}
+
+h2::after {
+    content : " •"
 }
 
 .playButton {
@@ -49,19 +60,17 @@ h2 {
     position: relative;  
     bottom: -120px;
     left: 820px; 
-    width: 200px;
 }
 
 h3 {
     position: relative;
     bottom: -20px;
-    /* left: var(--toLeftFromCenter); */
 }
 
 #bolpic{
     position: relative;  
     bottom: 300px;
-    left: 680px; 
+    left: 1220px; 
     size: 50%;
     animation-name: movingBig;
     animation-duration: 10s;
@@ -71,7 +80,7 @@ h3 {
 #bolpic2{
     position: relative;  
     bottom: -200px;
-    left: 100px; 
+    left: 690px; 
     size: 50%;
     animation-name: movingSmall;
     animation-duration: 7s;
@@ -98,15 +107,6 @@ button:active {
     border-color: black;
 }
 
-h2::before {
-    content : "• "
-}
-
-h2::after {
-    content : " •"
-}
-
-
 @keyframes movingBig {
     0% {bottom: 300px}
     25% {bottom: 200px}
@@ -116,11 +116,11 @@ h2::after {
 }
 
 @keyframes movingSmall {
-    0% {bottom: -230px}
-    25% {bottom: -180px}
-    50% {bottom: -230px}
-    75% {bottom: -180px}
-    100% {bottom: -230px}
+    0% {bottom: -245px}
+    25% {bottom: -195px}
+    50% {bottom: -245px}
+    75% {bottom: -195px}
+    100% {bottom: -245px}
 }
 
 
