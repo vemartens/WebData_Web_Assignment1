@@ -21,8 +21,11 @@ button:active {
 }
 
 #checkboard {
-    vertical-align: middle;
-    bottom: 20px;
+    /* vertical-align: middle; */
+    /* bottom: 20px; */
+    position: absolute;
+    top: 297px;
+    left: 200px;
 }
 
 #players button:enabled {
@@ -35,6 +38,15 @@ button:active {
     height: 30px;
 }
 
+#checkboard button {
+    width: 30px;
+    height: 30px;
+}
+
 /* #board {
     background-color: blue;
 } */
+
+circle {
+    user-select: none
+}

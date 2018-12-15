@@ -56,7 +56,7 @@ function GameState(socket) {
     this.checkIsAllRed = function() {
         var counter = 0;
         for(var i=0; i<this.getCheckCombi().length; i++) {
-            if(this.getCheckCombi()[i] == "Red") {
+            if(this.getCheckCombi()[i] == "red") {
                 counter++;
             }
         }
@@ -118,21 +118,25 @@ function PlayBoard(gs) {
     
     this.getButtonsByLine = function(lineID) {
         var rightLine = document.getElementById(lineID);
-        var buttons = rightLine.getElementsByTagName("button");
+        var buttons = rightLine.getElementsByTagName("circle");
         return buttons;
     };
 
     this.enableButtonsByLine = function(lineID) {
         var buttons = this.getButtonsByLine(lineID);
         for(var i=0; i<buttons.length; i++) {
-            buttons[i].disabled = false;
+            // buttons[i].disabled = false;
+            buttons[i].setAttribute('disabled', false);
+            buttons[i].setAttribute('stroke-width', "3");
         }
     };
 
     this.disableButtonsByLine = function(lineID) {
         var buttons = this.getButtonsByLine(lineID);
         for(var i=0; i<buttons.length; i++) {
-            buttons[i].disabled = true;
+            // buttons[i].disabled = true;
+            buttons[i].setAttribute('disabled', true);    
+            buttons[i].setAttribute('stroke-width', "1");
         }
     };
 
@@ -164,15 +168,22 @@ function PlayBoard(gs) {
     };
 
     this.activateLineButtons = function(lineID) {
-        var colors = ["O", "Red", "Green", "Blue", "Yellow", "Purple", "Brown", "Pink", "Orange"];
+        var colors = ["grey", "red", "green", "blue", "yellow", "purple", "brown", "pink", "orange"];
         var buttons = this.getButtonsByLine(lineID);
         
         Array.from(buttons).forEach( function(bol) {
             bol.addEventListener("click", function changeColor(e) {
                 var clickedButton = e.target;
-                if(clickedButton.value === "8")
-                    clickedButton.value = "-1";
-                clickedButton.innerHTML = colors[++clickedButton.value];
+                if (clickedButton.getAttribute('disabled') === 'true') {
+                    return;
+                }
+                var value = clickedButton.getAttribute("value");
+                if(value === "8") {
+                    value = "-1";
+                }
+                value++;
+                clickedButton.setAttribute('value', value);
+                clickedButton.setAttribute('fill', colors[value]);
                 // clickedButton.class
             });
 
@@ -183,15 +194,22 @@ function PlayBoard(gs) {
     };
 
     this.activateCheckButtons = function(lineID) {
-        var colors = ["O", "White", "Red"];
+        var colors = ["grey", "white", "red"];
         var buttons = this.getButtonsByLine(lineID);
 
         Array.from(buttons).forEach( function(bol){
             bol.addEventListener("click", function changeCheckColor(e){
                 var clickedButton = e.target;
-                if (clickedButton.value === "2")
-                    clickedButton.value = "-1";
-                clickedButton.innerHTML = colors[++clickedButton.value]
+                if (clickedButton.getAttribute('disabled') === 'true') {
+                    return;
+                }
+                var value = clickedButton.getAttribute("value");
+                if (value === "2"){
+                    value = "-1";
+                }
+                value++;
+                clickedButton.setAttribute('value', value);
+                clickedButton.setAttribute("fill", colors[value]);
             });
 
             // bol.addEventListener("click", function checkReadyByClick() {
@@ -204,7 +222,7 @@ function PlayBoard(gs) {
         var madeCombi = [];
         var combiButtons = this.getButtonsByLine("combination");
         for(var i=0; i<combiButtons.length; i++) {
-            madeCombi.push(combiButtons[i].innerHTML);
+            madeCombi.push(combiButtons[i].getAttribute("fill"));
         }
         gs.setTargetCombi(madeCombi);
     };
@@ -212,14 +230,14 @@ function PlayBoard(gs) {
     this.hideTargetWord = function() {
         var combiButtons = this.getButtonsByLine("combination");
         for(var i=0; i<combiButtons.length; i++) {
-            combiButtons[i].innerHTML = "?";
+            combiButtons[i].setAttribute('fill', 'grey');
         }
     };
 
     this.showCombi = function(combi) {
         var combiButtons = this.getButtonsByLine("combination");
         for(var i=0; i<combiButtons.length; i++) {
-            combiButtons[i].innerHTML = combi[i];
+            combiButtons[i].setAttribute('fill', combi[i]);
         }
     };
 
@@ -227,7 +245,7 @@ function PlayBoard(gs) {
         var madeGuess = [];
         var guessButtons = this.getButtonsByLine("line" + gs.getWrongGuesses());
         for(var i=0; i<guessButtons.length; i++) {
-            madeGuess.push(guessButtons[i].innerHTML);
+            madeGuess.push(guessButtons[i].getAttribute('fill'));
         }
         gs.setGuessedCombi(madeGuess);
     };
@@ -236,7 +254,7 @@ function PlayBoard(gs) {
         var guessCombi = gs.getGuessedCombi();
         var guessButtons = this.getButtonsByLine("line" + gs.getWrongGuesses());
         for(var i=0; i<guessButtons.length; i++) {
-            guessButtons[i].innerHTML = guessCombi[i];
+            guessButtons[i].setAttribute("fill", guessCombi[i]);
         }
     };
 
@@ -244,7 +262,7 @@ function PlayBoard(gs) {
         var madeCheck = [];
         var checkButtons = this.getButtonsByLine("check" + gs.getWrongGuesses());
         for(var i=0; i<checkButtons.length; i++) {
-            madeCheck.push(checkButtons[i].innerHTML);
+            madeCheck.push(checkButtons[i].getAttribute("fill"));
         }
         gs.setCheckCombi(madeCheck);
     };
@@ -253,7 +271,7 @@ function PlayBoard(gs) {
         checkCombi = gs.getCheckCombi();
         var checkButtons = this.getButtonsByLine("check" + gs.getWrongGuesses());
         for(var i=0; i<checkButtons.length; i++) {
-            checkButtons[i].innerHTML = checkCombi[i];
+            checkButtons[i].setAttribute("fill", checkCombi[i]);
         }
     };
 
@@ -333,6 +351,7 @@ function PlayBoard(gs) {
         };
 
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
+            console.log(gs.getWrongGuesses());
             board.switchPlayerButtons(gs.getPlayerType());
             board.hideTargetWord();
             gs.setTargetCombi(incomingMsg.data);
