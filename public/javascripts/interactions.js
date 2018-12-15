@@ -237,8 +237,10 @@ function PlayBoard(gs) {
 
     this.showCombi = function(combi) {
         var combiButtons = this.getButtonsByLine("combination");
+        var texts = document.getElementsByTagName("text");
         for(var i=0; i<combiButtons.length; i++) {
             combiButtons[i].setAttribute('fill', combi[i]);
+            texts[i].textContent = " ";
         }
     };
 
