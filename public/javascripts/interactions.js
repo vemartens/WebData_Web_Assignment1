@@ -184,7 +184,6 @@ function PlayBoard(gs) {
                 value++;
                 clickedButton.setAttribute('value', value);
                 clickedButton.setAttribute('fill', colors[value]);
-                // clickedButton.class
             });
 
             bol.addEventListener("click", function checkReadyByClick() {
@@ -229,8 +228,10 @@ function PlayBoard(gs) {
 
     this.hideTargetWord = function() {
         var combiButtons = this.getButtonsByLine("combination");
+        var texts = document.getElementsByTagName("text");
         for(var i=0; i<combiButtons.length; i++) {
             combiButtons[i].setAttribute('fill', 'grey');
+            texts[i].textContent = "?";
         }
     };
 
