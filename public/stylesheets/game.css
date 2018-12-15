@@ -23,9 +23,10 @@ button:active {
 #checkboard {
     /* vertical-align: middle; */
     /* bottom: 20px; */
-    position: absolute;
+    /* position: absolute;
     top: 297px;
-    left: 200px;
+    left: 200px; */
+    margin-left: 2rem;
 }
 
 #players button:enabled {
@@ -49,4 +50,18 @@ button:active {
 
 circle {
     user-select: none
+}
+
+#boards {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+#lower-buttons {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+}
+#lower-buttons section:not(:first-child) {
+    margin-left: 1rem;
 }

@@ -7,23 +7,26 @@
 body {
     /* width: 100%; */
     display: table;
-    /* margin: 50px; */
+    margin: 0px;
     /* margin: 100 px; 
     padding: 60px; */
     /* background-image: url("background_balls.jpg"); */
     background-image: url("test.jpg");
     background-color: #2C2E29;
     background-repeat: no-repeat;
-    background-position: bottom right;
+    background-position: right bottom;
     /* width: auto; */
     /* background-color: #cccccc; */
     vertical-align: middle;
     text-align:  center;
     color: rgba(255, 255, 255, 0.918);
-
-    /* overflow-y: scroll */
+    height: 100vh;
+    overflow-y: scroll
 }
 
+main {
+    margin-top: 50px;
+}
 main *{
     left: var(--toLeftFromCenter);
     /* bottom: -100px; */
