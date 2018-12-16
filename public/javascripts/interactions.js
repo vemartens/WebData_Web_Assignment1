@@ -152,7 +152,7 @@ function PlayBoard(gs) {
         var combiButtons = this.getButtonsByLine(lineID);
         var counter = 0;
         for(var i=0; i<combiButtons.length; i++) {
-            if(combiButtons[i].value != "-1" && combiButtons[i].value != "0")
+            if(combiButtons[i].getAttribute("value") != "0" && combiButtons[i].getAttribute("value") != "grey")
                 counter++;
         }
         return counter === 4;
