@@ -98,12 +98,16 @@ function GameState(socket) {
             let alertString;
             if( winner == this.playerType){
                 alertString = "Congratulation! You won!";
+                new Audio("data/yeah.wav").play();
             }
             else {
                 alertString = "Game over. You lost..."
+                //new Audio("data/poor-baby.wav").play();
             }
             alertString += "\n click on Replay to start a new game!";
-            alert(alertString);
+            setTimeout(function () {
+                alert(alertstring);
+            }, 500);
 
             //socket.close();
         }
@@ -312,6 +316,7 @@ function PlayBoard(gs) {
 
     var gs = new GameState(socket);
     var board = new PlayBoard(gs);
+    // var mySound;
 
 
     socket.onmessage = function (event) {
@@ -330,9 +335,12 @@ function PlayBoard(gs) {
                 board.activateLineButtons("combination");
                 
                 document.getElementById("readyButton").addEventListener("click", function combiReady(){
+                    new Audio("data/pop.wav").play();
                     board.setTargetCombiByReady();
                     board.disableReadyButton();
-                    alert("Please wait for the first guess to check");
+                    setTimeout(function () {
+                        alert("Please wait for the first guess to check");
+                    }, 500);
                     board.disableButtonsByLine("combination");
                     board.switchPlayerButtons(gs.getPlayerType());
                     
@@ -354,7 +362,7 @@ function PlayBoard(gs) {
         };
 
         if(incomingMsg.type == Messages.T_TARGET_COMBI && gs.getPlayerType() == "B") {
-            console.log(gs.getWrongGuesses());
+            //console.log(gs.getWrongGuesses());
             board.switchPlayerButtons(gs.getPlayerType());
             board.hideTargetWord();
             gs.setTargetCombi(incomingMsg.data);
@@ -365,9 +373,12 @@ function PlayBoard(gs) {
             board.activateLineButtons("line"+gs.getWrongGuesses());
 
             document.getElementById("readyButton").addEventListener("click", function firstGuessReady(){
+                new Audio("data/pop.wav").play();
                 board.setGuessByReady();
                 board.disableReadyButton();
-                alert("Please wait till your guess is checked");
+                setTimeout(function () {
+                    alert("Please wait till your guess is checked");
+                }, 500);
                 board.disableButtonsByLine("line"+gs.getWrongGuesses());
                 board.switchPlayerButtons(gs.getPlayerType());
 
@@ -387,11 +398,14 @@ function PlayBoard(gs) {
             board.enableReadyButton();
 
             document.getElementById("readyButton").addEventListener("click", function checkReady(){
+                new Audio("data/pop.wav").play();
                 board.setCheckByReady();
                 board.disableReadyButton();
-                if(!gs.checkIsAllRed()) {
-                    alert("Please wait till another guess is made");
-                }
+                setTimeout(function () {
+                    if(!gs.checkIsAllRed()) {
+                        alert("Please wait till another guess is made");
+                    }
+                }, 500);
                 board.disableButtonsByLine("check"+gs.getWrongGuesses());
                 board.switchPlayerButtons(gs.getPlayerType());
             
@@ -413,9 +427,12 @@ function PlayBoard(gs) {
                 board.activateLineButtons("line"+gs.getWrongGuesses());
 
                 document.getElementById("readyButton").addEventListener("click", function guessReady(){
+                    new Audio("data/pop.wav").play();
                     board.setGuessByReady();
                     board.disableReadyButton();
-                    alert("Please wait till your guess is checked");
+                    setTimeout(function () {
+                        alert("Please wait till your guess is checked");
+                    }, 500);
                     board.disableButtonsByLine("line"+gs.getWrongGuesses());
                     board.switchPlayerButtons(gs.getPlayerType());
                     
@@ -431,12 +448,16 @@ function PlayBoard(gs) {
 
             if(incomingMsg.data == "B") {
                 alertString = "Congratulation! You won!";
+                new Audio("data/yeah.wav").play();
             }
             else {
                 alertString = "Game over. You lost..."
+                //new Audio("data/poor-baby.wav").play();
             }
             alertString += "\nClick on Replay to start a new game!";
-            alert(alertString);
+            setTimeout(function () {
+                alert(alertString);
+            }, 500);
 
             board.showCombi(gs.getTargetCombi());
 
