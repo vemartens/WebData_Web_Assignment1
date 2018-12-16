@@ -45,6 +45,19 @@ circle {
     transform: scale(1.6,1.6);
 }
 
+@keyframes draw {
+    from {
+        stroke-dashoffset: 81;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+circle[disabled=false] {
+    stroke-dasharray: 81;
+    animation: draw linear 1s;
+}
+
 svg {
     width: 55px;
     height: 55px;
@@ -52,7 +65,7 @@ svg {
 
 #combination {
     margin-left: 250px;
-    position: relative;
+    position: relative;  
     top: -52px;
 }
 #combination text {
@@ -134,5 +147,3 @@ svg {
     font-size: 20;
     margin-left: 1200px;
 }
-
-
