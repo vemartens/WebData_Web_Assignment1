@@ -11,7 +11,7 @@ body {
     /* margin: 100 px; 
     padding: 60px; */
     /* background-image: url("background_balls.jpg"); */
-    background-image: url("test.jpg");
+    background-image: url("background_balls.jpg");
     background-color: #2C2E29;
     background-repeat: no-repeat;
     background-position: right bottom;
@@ -111,11 +111,11 @@ button:active {
 }
 
 @keyframes movingBig {
-    0% {bottom: 300px}
-    25% {bottom: 200px}
-    50% {bottom: 300px}
-    75% {bottom: 200px}
-    100% {bottom: 300px}
+    0% {bottom: 310px}
+    25% {bottom: 210px}
+    50% {bottom: 310px}
+    75% {bottom: 210px}
+    100% {bottom: 310px}
 }
 
 @keyframes movingSmall {

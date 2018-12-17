@@ -28,15 +28,16 @@ app.get("/", (req, res) => {
 
 //app.get("/", indexRouter);
 // app.get("/play", indexRouter);
+
 app.get("/play", function(req, res) {
     res.sendFile("game.html", {root: "./public"});
-    var oldamount = req.cookies.gameStarted;
-    if(oldamount == undefined){
-        oldamount = 1;
+    var userAmount = req.cookies.gameStarted;
+    if(userAmount == undefined){
+        userAmount = 1;
     }else{
-        oldamount++;
+        userAmount++;
     }
-    res.cookie("gameStarted", oldamount);
+    res.cookie("gameStarted", userAmount);
   });
 
 var server = http.createServer(app);
@@ -58,7 +59,7 @@ setInterval(function() {
         }
     }
 }, 50000);
-//gameStatus.gamesInitialized++
+
 var currentGame = new Game(); //gameID is gelijk aan hoeveelste game het is
 var connectionID = 0;
 
