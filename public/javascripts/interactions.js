@@ -84,7 +84,11 @@ function GameState(socket) {
 
         socket.send(JSON.stringify(outgoingMsg));
 
-        let winner = this.whoWon();
+        let winner = null;
+
+        if(this.playerType == "A"){
+            winner = this.whoWon();
+        }
 
         if (winner != null){
 
@@ -402,7 +406,7 @@ function PlayBoard(gs) {
                 board.setCheckByReady();
                 board.disableReadyButton();
                 setTimeout(function () {
-                    if(!gs.checkIsAllRed()) {
+                    if(!gs.checkIsAllRed() && gs.getWrongGuesses()<Setup.MAX_ALLOWED_GUESSES) {
                         alert("Please wait till another guess is made");
                     }
                 }, 500);
