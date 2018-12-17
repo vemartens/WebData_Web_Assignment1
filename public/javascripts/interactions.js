@@ -104,9 +104,9 @@ function GameState(socket) {
                 alertString = "Game over. You lost..."
                 //new Audio("data/poor-baby.wav").play();
             }
-            alertString += "\n click on Replay to start a new game!";
+            alertString += "\nClick on Replay to start a new game!";
             setTimeout(function () {
-                alert(alertstring);
+                alert(alertString);
             }, 500);
 
             //socket.close();
