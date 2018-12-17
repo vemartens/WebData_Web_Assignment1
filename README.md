@@ -1,7 +1,7 @@
 # CSE1500 Web assignments 1, 2 and 3     
 **Board game: Mastermind**  
 
-Made by: Floor Straver and Vera Martens  
+Made by: [Floor Straver](https://github.com/FloorStraver) and [Vera Martens](https://github.com/vemartens)   
 CSE group: CSE1 65
 
 For the server-side:  
