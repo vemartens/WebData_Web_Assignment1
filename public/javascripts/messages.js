@@ -36,12 +36,15 @@
     };
     exports.S_PLAYER_B = JSON.stringify(exports.O_PLAYER_B);
 
-    
+
+    /* Server to player A: player B joined 
+     */
     exports.T_PLAYER_JOINED = "OTHER-PLAYER-JOINED";
     exports.O_PLAYER_JOINED = {
         type: exports.T_PLAYER_JOINED,
         data: null
     };
+
 
     /* Player A to server OR server to Player B: this is the target combination 
      */
@@ -51,12 +54,15 @@
         data: null
     };
 
+    
+    /* Player B to server OR server to Player A: this is the guessed combination
+     * Player A to server OR server to Player B: this is the check combination for last guess
+     */
     exports.T_GUESS_OR_CHECK = "SET-GUESS-OR-CHECK";
     exports.O_GUESS_OR_CHECK = {
         type: exports.T_GUESS_OR_CHECK,
         data: null
     };
-
 
 
     /* Server to Player A & B: game over with result won/loss 
