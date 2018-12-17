@@ -472,7 +472,7 @@ function PlayBoard(gs) {
 
     socket.onclose = function(){
         if(gs.whoWon()==null){
-           alert("The other player left the game.\n Click on Replay to start a new game");
+           alert("The other player left the game.\nClick on Replay to start a new game");
         }
     };
 
