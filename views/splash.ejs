@@ -8,11 +8,8 @@
         <main>
             <section id="top">
                 <h1 class="mastermind">Mastermind</h1>
-                <!-- <h5 class="neon" data-text="U">MA<span class="flicker-slow">ST</span>E<span class="flicker-fast">R</span>MIND</h5> -->
                 <h2>Code-breaking game for two players</h2>
             </section>
-
-            <!-- eventueel naam invullen -->
 
             <section id="play">
                 <form action="/play" method="get">
@@ -20,7 +17,6 @@
                 </form>
             </section>
 
-            <!-- wordt missch aangepast naar onmouseover/onmouseout -->
             <section id="instruction">
                 <button onclick="instructionButton()">Instructions</button>
             </section>
@@ -47,9 +43,19 @@
 
             <section>
                 <h3>
-                    There are
+                    There
+                    <%if (gameStarted != 1) { %>
+                        are
+                    <% } else { %>
+                        is
+                    <% } %>
                     <%= gameStarted %>
-                    people who played this game.
+                    <%if (gameStarted != 1) { %>
+                        people
+                    <% } else { %>
+                        person
+                    <% } %>
+                    who played this game.
                 </h3>
             </section>
 

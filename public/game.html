@@ -2,7 +2,6 @@
     <head>
         <title>Mastermind</title>
         <link rel="stylesheet" href="stylesheets/game.css">
-        <!-- <link href="stylesheets/game.css"> -->
     </head>
 
     <body>
@@ -18,11 +17,6 @@
             </section>
 
             <section class="line" id="combination">
-                <!-- <button disabled class="hoi" value="0" id="combinationA">O</button>
-                <button disabled value="0" id="combinationB">O</button>
-                <button disabled value="0" id="combinationC">O</button>
-                <button disabled value="0" id="combinationD">O</button> -->
-                <!-- <svg width="30" height="30"> -->
                 <svg>
                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="combinationA" value="0" disabled="true"> </circle>
                     <text x="44%" y="61%" text-anchor="middle"></text>
@@ -45,29 +39,11 @@
             <section id = "players">
                 <div><button disabled value="0" id="playerA">Codemaker</button></div>
                 <div><button disabled value="0" id="playerB">Codebreaker</button></div>
-                <!-- <div style="width:60px;height:22px;border:1px solid #000;">PlayerA</div>
-                <div style="width:60px;height:22px;border:1px solid #000;">PlayerB</div> -->
             </section>
             <br>
 
             <div id="coloredBollen">
                 <table>
-                    <!-- <tr>
-                        <td><button disabled onclick="">Red</button></td>
-                        <td><button disabled onclick="">Green</button></td>
-                    </tr>
-                    <tr>
-                        <td><button disabled onclick="">Blue</button></td>
-                        <td><button disabled onclick="">Yellow</button></td>
-                    </tr>
-                    <tr>
-                        <td><button disabled onclick="">Purple</button></td>
-                        <td><button disabled onclick="">Brown</button></td>
-                    </tr>
-                    <tr>
-                        <td><button disabled onclick="">Pink</button></td>
-                        <td><button disabled onclick="">Orange</button></td>
-                    </tr> -->
                     <tr>
                         <td>
                             <svg width="30" height="30">
@@ -123,10 +99,6 @@
                 <section id="board">
                     <table>
                         <tr class="line" id="line10">
-                            <!-- <td><button disabled id="10A" value="0">O</button></td>
-                            <td><button disabled id="10B" value="0">O</button></td>
-                            <td><button disabled id="10C" value="0">O</button></td>
-                            <td><button disabled id="10D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="10A" value="0" disabled="true"></circle>
@@ -149,64 +121,50 @@
                             </td>
                         </tr>
                         <tr class="line" id="line9">
-                            <!-- <td><button disabled id="9A" value="0">O</button></td>
-                            <td><button disabled id="9B" value="0">O</button></td>
-                            <td><button disabled id="9C" value="0">O</button></td>
-                            <td><button disabled id="9D" value="0">O</button></td> -->
                             <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9A" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9B" value="0" disabled="true"></circle>
-                                    </svg> 
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9C" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9D" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                            </tr>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9A" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9B" value="0" disabled="true"></circle>
+                                </svg> 
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9C" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="9D" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
                         </tr>
                         <tr class="line" id="line8">
-                            <!-- <td><button disabled id="8A" value="0">O</button></td>
-                            <td><button disabled id="8B" value="0">O</button></td>
-                            <td><button disabled id="8C" value="0">O</button></td>
-                            <td><button disabled id="8D" value="0">O</button></td> -->
                             <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8A" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8B" value="0" disabled="true"></circle>
-                                    </svg> 
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8C" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8D" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                            </tr>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8A" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8B" value="0" disabled="true"></circle>
+                                </svg> 
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8C" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="8D" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
                         </tr>
                         <tr class="line" id="line7">
-                            <!-- <td><button disabled id="7A" value="0">O</button></td>
-                            <td><button disabled id="7B" value="0">O</button></td>
-                            <td><button disabled id="7C" value="0">O</button></td>
-                            <td><button disabled id="7D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="7A" value="0" disabled="true"></circle>
@@ -228,12 +186,7 @@
                                 </svg>
                             </td>
                         </tr>
-                        </tr>
                         <tr class="line" id="line6">
-                            <!-- <td><button disabled id="6A" value="0">O</button></td>
-                            <td><button disabled id="6B" value="0">O</button></td>
-                            <td><button disabled id="6C" value="0">O</button></td>
-                            <td><button disabled id="6D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="6A" value="0" disabled="true"></circle>
@@ -255,12 +208,7 @@
                                 </svg>
                             </td>
                         </tr>
-                        </tr>
                         <tr class="line" id="line5">
-                            <!-- <td><button disabled id="5A" value="0">O</button></td>
-                            <td><button disabled id="5B" value="0">O</button></td>
-                            <td><button disabled id="5C" value="0">O</button></td>
-                            <td><button disabled id="5D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="5A" value="0" disabled="true"></circle>
@@ -282,12 +230,7 @@
                                 </svg>
                             </td>
                         </tr>
-                        </tr>
                         <tr class="line" id="line4">
-                            <!-- <td><button disabled id="4A" value="0">O</button></td>
-                            <td><button disabled id="4B" value="0">O</button></td>
-                            <td><button disabled id="4C" value="0">O</button></td>
-                            <td><button disabled id="4D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="4A" value="0" disabled="true"></circle>
@@ -309,12 +252,7 @@
                                 </svg>
                             </td>
                         </tr>
-                        </tr>
                         <tr class="line" id="line3">
-                            <!-- <td><button disabled id="3A" value="0">O</button></td>
-                            <td><button disabled id="3B" value="0">O</button></td>
-                            <td><button disabled id="3C" value="0">O</button></td>
-                            <td><button disabled id="3D" value="0">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="3A" value="0" disabled="true"></circle>
@@ -336,60 +274,49 @@
                                 </svg>
                             </td>
                         </tr>
-                        </tr>
                         <tr class="line" id="line2">
-                            <!-- <td><button disabled id="2A" value="0">O</button></td>
-                            <td><button disabled id="2B" value="0">O</button></td>
-                            <td><button disabled id="2C" value="0">O</button></td>
-                            <td><button disabled id="2D" value="0">O</button></td> -->
                             <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2A" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2B" value="0" disabled="true"></circle>
-                                    </svg> 
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2C" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2D" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                            </tr>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2A" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2B" value="0" disabled="true"></circle>
+                                </svg> 
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2C" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="2D" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
                         </tr>
                         <tr class="line" id="line1">
-                            <!-- <td><button disabled id="1A" value="0">O</button></td>
-                            <td><button disabled id="1B" value="0">O</button></td>
-                            <td><button disabled id="1C" value="0">O</button></td>
-                            <td><button disabled id="1D" value="0">O</button></td> -->
                             <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1A" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1B" value="0" disabled="true"></circle>
-                                    </svg> 
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1C" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                                <td>
-                                    <svg width="30" height="30">
-                                        <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1D" value="0" disabled="true"></circle>
-                                    </svg>
-                                </td>
-                            </tr>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1A" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1B" value="0" disabled="true"></circle>
+                                </svg> 
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1C" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
+                            <td>
+                                <svg width="30" height="30">
+                                    <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="1D" value="0" disabled="true"></circle>
+                                </svg>
+                            </td>
                         </tr>
                     </table>
                 </section>
@@ -399,10 +326,6 @@
 
                     <table class="check" id="check10">
                         <tr>
-                            <!-- <td><button disabled value="0" id="c10A">O</button></td>
-                            <td><button disabled value="0" id="c10B">O</button></td>
-                            <td><button disabled value="0" id="c10C">O</button></td>
-                            <td><button disabled value="0" id="c10D">O</button></td> -->
                             <td>
                                 <svg width="30" height="30">
                                     <circle cx="15" cy="15" r="13" stroke="black" stroke-width="1" fill="grey" id="c10A" value="0" disabled="true"></circle>

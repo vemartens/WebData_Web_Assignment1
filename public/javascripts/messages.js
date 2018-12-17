@@ -1,4 +1,6 @@
 
+
+//the messages that are sent between server and client(s)
 (function(exports) {
 
      /* Client to server: game is complete, the winner is ...

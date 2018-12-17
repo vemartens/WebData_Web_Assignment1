@@ -3,7 +3,7 @@ var game = function(gameID) {
     this.playerA = null;
     this.playerB = null;
     this.id = gameID;
-    this.combiToGuess = [];   //first player to join the game will set the combination
+    this.combiToGuess = [];      //first player to join the game will set the combination
     this.gameState = "0 JOINED"; //different states are defined below
 }
 
@@ -17,6 +17,8 @@ game.prototype.transitionStates["A"] = 5; //A won
 game.prototype.transitionStates["B"] = 6; //B won
 game.prototype.transitionStates["ABORTED"] = 7;
 
+//transition matrix, with a 1 for the valid transitions
+//valid is: 0-1, 1-0, 1-2, 2-3, 2-7, 3-4, 3-7, 4-3, 4-5, 4-6, 4-7
 game.prototype.transitionMatrix = [
     [0, 1, 0, 0, 0, 0, 0, 0],   //0 JOINED
     [1, 0, 1, 0, 0, 0, 0, 0],   //1 JOINED
@@ -27,39 +29,38 @@ game.prototype.transitionMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0],   //B WON
     [0, 0, 0, 0, 0, 0, 0, 0]    //ABORTED
 ];
-//valid is: 0-1, 1-0, 1-2, 2-3, 2-7, 3-4, 3-7, 4-3, 4-5, 4-6, 4-7
 
+//returns whether a certain transition is valid
 game.prototype.isValidTransition = function(from, to) {
-    console.assert(typeof from == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof from);
-    console.assert(typeof to == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof to);
-    console.assert( from in game.prototype.transitionStates == true, "%s: Expecting %s to be a valid transition state", arguments.callee.name, from);
-    console.assert( to in game.prototype.transitionStates == true, "%s: Expecting %s to be a valid transition state", arguments.callee.name, to);
-
+    //If the message from is not a valid transitionstate, there is no transition possible
     let i, j;
     if (! (from in game.prototype.transitionStates)) {
         return false;
     }
+    // set i by the number associating with the transitionstate from
     else {
         i = game.prototype.transitionStates[from];
     }
 
+    //If the message to is not a valid transitionstate there is no transition possible
     if (!(to in game.prototype.transitionStates)) {
         return false;
     }
+    // Set j by the number associating with the transitionstate to
     else {
         j = game.prototype.transitionStates[to];
     }
+    //If there is a transition possible between from and to return true    
     return (game.prototype.transitionMatrix[i][j] > 0);
 };
 
+//returns true if the transitionstate s is a valid transitionstate
 game.prototype.isValidState = function (s) {
     return (s in game.prototype.transitionStates);
 };
 
-
+//sets the status by w if it is a valid transitionstate
 game.prototype.setStatus = function (w) {
-    console.assert(typeof w == "string", "%s: Expecting a string, got a %s", arguments.callee.name, typeof w);
-
     if (game.prototype.isValidState(w) && game.prototype.isValidTransition(this.gameState, w)) {
         this.gameState = w;
         console.log("[STATUS] %s", this.gameState);
@@ -69,27 +70,30 @@ game.prototype.setStatus = function (w) {
     }
 };
 
+//returns an error if the gamestate is not valid to make a combi
+//initialize combination, when there is no error
 game.prototype.setCombi = function (combi) {
-    console.assert(Array.isArray(combi), "%s: Expecting an array, got a %s", arguments.callee.name, typeof combi);
-
     //two possible options for the current game state:
     //1 JOINED, 2 JOINED
     if (this.gameState != "1 JOINED" && this.gameState != "2 JOINED") {
-        return new Error("Trying to set word, but game status is %s", this.gameState);
+        return new Error("Trying to set combination, but game status is %s", this.gameState);
     }
     this.combiToGuess = combi;
 };
 
+//returns the target combination
 game.prototype.getCombi = function(){
     return this.combiToGuess;
 };
 
+//returns whether there are two players connected. True if so, false otherwise
 game.prototype.hasTwoConnectedPlayers = function () {
     return (this.gameState == "2 JOINED");
 };
 
+//returns the name of the player that joined
+//gives error if there are already two players 
 game.prototype.addPlayer = function (p) {
-    console.assert(p instanceof Object, "%s: Expecting an object (WebSocket), got a %s", arguments.callee.name, typeof p);
 
     if (this.gameState != "0 JOINED" && this.gameState != "1 JOINED") {
         return new Error("Invalid call to addPlayer, current state is %s", this.gameState);
