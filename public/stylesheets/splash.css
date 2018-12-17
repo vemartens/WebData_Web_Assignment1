@@ -90,13 +90,13 @@ button {
     font-weight:bold;
     text-align: center;
     border:1px solid darkgray;
-    transition: width 3s;
+    /* transition: width 3s; */
 }
 
 button:hover {
     color:white;
     background:darkgray;
-    width: 300px;
+    /* width: 300px; */
 }
 
 button:active {
